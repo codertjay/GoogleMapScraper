@@ -24,7 +24,7 @@ def get_email_from_website(url):
     # Extract all emails from the website
     emails = re.findall(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', response.text)
     # Join the emails into a comma-separated string
-    email_string = ", ".join(emails)
+    email_string = ", ".join(set(emails))
 
     # Print the email string
     return email_string
