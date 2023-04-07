@@ -1,0 +1,88 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block head_title %}{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static "css/plugin.min.css" %}">
+    <link rel="stylesheet" href="{% static "style.css" %}">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static "img/favicon.png" %}">
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v3.0.0/css/line.css">
+    {% block extra_head %}
+
+    {% endblock %}
+    <!-- Fonts -->
+
+</head>
+
+<body>
+
+
+<main class="main-content">
+    <div class="admin">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-xxl-3 col-xl-4 col-md-6 col-sm-8">
+                    <div class="edit-profile">
+                        <div class="edit-profile__logos">
+                            <a href="#">
+                                <img class="dark" src="{% static "img/logo-dark.png" %}" alt="">
+                                <img class="light" src="{% static "img/logo-white.png" %}" alt="">
+                            </a>
+                        </div>
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert {% if messages.tags == 'info' or message.tags == 'success' %}
+                                    alert-danger text-white {% else %} alert-{{ message.tags }}   {% endif %}
+                                    p-2 alert-dismissible fade show text-center text-capitalize shadow-sm" role="alert"
+                                     style="">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        {% block content %}
+
+                        {% endblock %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div id="overlayer">
+    <div class="loader-overlay">
+        <div class="dm-spin-dots spin-lg">
+            <span class="spin-dot badge-dot dot-primary"></span>
+            <span class="spin-dot badge-dot dot-primary"></span>
+            <span class="spin-dot badge-dot dot-primary"></span>
+            <span class="spin-dot badge-dot dot-primary"></span>
+        </div>
+    </div>
+</div>
+<div class="enable-dark-mode dark-trigger">
+    <ul>
+        <li>
+            <a href="#">
+                <i class="uil uil-moon"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+<script src="{% static "js/plugins.min.js" %}"></script>
+<script src="{% static "js/script.min.js" %}"></script>
+
+</body>
+
+</html>

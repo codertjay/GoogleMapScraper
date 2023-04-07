@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="dm-page-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb-main">
+                        <h4 class="text-capitalize breadcrumb-title">Upload</h4>
+                        <div class="breadcrumb-action justify-content-center flex-wrap">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#"><i class="uil uil-estate"></i>Home</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Upload</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card card-default card-md mb-4">
+                        <div class="card-header  py-20 d-flex">
+                            <h6>Upload Search </h6>
+                            <a href="{% url "csv_sample" %}"> Sample</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="dm-tag-wrap">
+                                <form action="." method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <input type="file" name="csv" class="upload-one "
+                                           style="margin-bottom: 12px !important;">
+
+                                    <button class="btn btn-primary">Upload</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

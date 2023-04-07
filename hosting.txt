@@ -1,0 +1,62 @@
+[Unit]
+Description=gunicorn daemon
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+User=mapscraper
+Group=www-data
+WorkingDirectory=/home/mapscraper/GoogleMapScraper
+ExecStart=/home/mapscraper/GoogleMapScraper/venv/bin/gunicorn \
+        --access-logfile - \
+        --workers 3 \
+        --bind unix:/run/gunicorn.sock \
+        GoogleMapScraper.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+
+
+# Nginx Configuration
+server {
+    listen 80;
+    server_name 157.245.137.91 ;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/mapscraper/GoogleMapScraper;
+    }
+    location /media/ {
+        root /home/mapscraper/GoogleMapScraper;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;
+    }
+}
+
+
+Celery Configuration systemd confuration in
+sudo nano /etc/systemd/system/celery.service
+
+[Unit]
+Description=Celery Service
+After=network.target
+
+[Service]
+User=mapscraper
+Group=www-data
+WorkingDirectory=/home/mapscraper/GoogleMapScraper
+ExecStart=/home/mapscraper/GoogleMapScraper/venv/bin/celery -A GoogleMapScraper worker  --loglevel=info
+
+[Install]
+WantedBy=multi-user.target
+
+sudo systemctl daemon-reload
+sudo systemctl start celery
+sudo systemctl enable celery
+sudo systemctl status celery

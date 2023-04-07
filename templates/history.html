@@ -1,0 +1,487 @@
+{% extends "base.html" %}
+{% load item_tags %}
+
+{% load crispy_forms_filters %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="breadcrumb-main">
+                <h4 class="text-capitalize breadcrumb-title">History</h4>
+                <div class="breadcrumb-action justify-content-center flex-wrap">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url "map" %}"><i class="uil uil-estate"></i>Map</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">History</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-30">
+            <div class="support-ticket-system support-ticket-system--search">
+                <div class="breadcrumb-main m-0 breadcrumb-main--table justify-content-sm-between ">
+
+                    <div class="support-form datatable-support-form d-flex justify-content-xxl-between justify-content-center align-items-center flex-wrap">
+
+                        <div class="support-form__search">
+                            <div class="support-order-search">
+                                <form action="." class="support-order-search__form">
+                                    <i class="uil uil-search"></i>
+
+                                    <input class="form-control border-0 box-shadow-none" type="search"
+                                           placeholder="Search"
+                                           style="min-width: 250px"
+                                           name="search"
+                                            {% if request.GET.search %}
+                                           value="{{ request.GET.search }}"
+                                            {% endif %}
+                                           aria-label="Search">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="action-btn mb-3">
+                        <div class="dropdown dropdown-click">
+                            <div class="btn-group dropleft">
+                                <button class="btn btn-outline-lighten btn-sm">Export</button>
+                                <button type="button" class="btn btn-outline-lighten btn-sm dropdown-toggle-split"
+                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="uil uil-angle-down"></i>
+                                </button>
+                                <div class="dropdown-default dropdown-menu" style="">
+                                    <a class="dropdown-item" href="{% url 'csv_download' %}">Export</a>
+                                    <a class="dropdown-item" href="{% url 'csv_all_download' %}">Export All</a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+                <div class="userDatatable userDatatable--ticket userDatatable--ticket--2 mt-1">
+                    <div class="table-responsive">
+                        <table class="table mb-0 table-borderless">
+                            <thead>
+
+                            <tr class="userDatatable-header">
+                                <th>
+                                    <span class="projectDatatable-title">image</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">phone_number</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">email</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">business_name</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">municipality</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">plus_code</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">place_id</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">cid</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">opening_hours</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">google_map_url</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">latitude</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">longitude</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">reviews_url</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">average_rating</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">review_count</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">website</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">full_address</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">street</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">categories</span>
+                                </th>
+
+                                <th>
+                                    <span class="projectDatatable-title">social_media_links</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">phones</span>
+                                </th>
+
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for item in page_obj %}
+                                <tr>
+                                    <td>
+                                        <li>
+                                            <a href="{{ item.website }}" target="_blank"><img
+                                                    class="rounded-circle wh-34" src="{{ item.image }}"
+                                                    alt="author"></a>
+                                        </li>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.phone_number }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.email }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.business_name|truncatewords:3 }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.municipality }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.plus_code }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.place_id }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.cid }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.opening_hours }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="{{ item.google_map_url }}" target="_blank">
+                                            <div class="userDatatable-content--subject">
+                                                {{ item.google_map_url|truncatechars:20 }}
+                                            </div>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.latitude }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.longitude }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="{{ item.reviews_url }}" target="_blank">
+                                            <div class="userDatatable-content--subject">
+                                                {{ item.reviews_url|truncatechars:20 }}
+                                            </div>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.average_rating }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.review_count }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--priority">
+                                            <a href="{{ item.website }}"
+                                               style="word-break: break-all;max-width: 300px;min-width: 100px;padding-top: 20px">
+                                                {{ item.website|truncatechars:30 }}
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.full_address }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.street }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.categories }}
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.social_media_links }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.phones }}
+                                        </div>
+
+                                    </td>
+
+
+                                    <td>
+                                        <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
+
+                                            <li>
+                                                <a type="button" data-bs-toggle="modal"
+                                                   data-bs-target="#modal-edit_{{ item.id }}"
+                                                   class="edit" style="box-shadow: none;">
+                                                    <i class="uil uil-edit"></i>
+                                                </a>
+                                                <div class="modal-basic modal fade" id="modal-edit_{{ item.id }}"
+                                                     tabindex="-1"
+                                                     style="display: none;" aria-hidden="true">
+                                                    <div class="modal-dialog modal-md" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-body">
+                                                                <div class="modal-info-text mb-3">
+                                                                    <h4> Edit History</h4>
+                                                                </div>
+                                                                <form action="{% url 'history_update' %}"
+                                                                      method="post">
+                                                                    {% csrf_token %}
+                                                                    <input type="hidden" value="{{ item.id }}"
+                                                                           name="id_history">
+                                                                    <div id="div_id_phone_number"
+                                                                         class="form-group"><label
+                                                                            for="id_phone_number" class="">
+                                                                        Phone number
+                                                                    </label>
+                                                                        <div><input type="text"
+                                                                                    name="phone_number"
+                                                                                    maxlength="250"
+                                                                                    class="textinput textInput form-control"
+                                                                                    value="{{ item.phone_number }}"
+                                                                                    id="id_phone_number"></div>
+                                                                    </div>
+                                                                    <div id="div_id_email" class="form-group">
+                                                                        <label for="id_email" class="">
+                                                                            Email
+                                                                        </label>
+                                                                        <div><input type="text" name="email"
+                                                                                    maxlength="250"
+                                                                                    class="textinput textInput form-control"
+                                                                                    value="{{ item.email }}"
+                                                                                    id="id_email"></div>
+                                                                    </div>
+                                                                    <div id="div_id_business_name"
+                                                                         class="form-group"><label
+                                                                            for="id_business_name"
+                                                                            class=" requiredField">
+                                                                        Business name<span
+                                                                            class="asteriskField">*</span>
+                                                                    </label>
+                                                                        <div><input type="text"
+                                                                                    name="business_name"
+                                                                                    maxlength="250"
+                                                                                    class="textinput textInput form-control"
+                                                                                    required=""
+                                                                                    value="{{ item.business_name }}"
+                                                                                    id="id_business_name"></div>
+                                                                    </div>
+                                                                    <div id="div_id_address" class="form-group">
+                                                                        <label for="id_address"
+                                                                               class=" requiredField">
+                                                                            Address<span
+                                                                                class="asteriskField">*</span>
+                                                                        </label>
+                                                                        <div><input type="text" name="address"
+                                                                                    maxlength="250"
+                                                                                    class="textinput textInput form-control"
+                                                                                    value="{{ item.address }}"
+                                                                                    required="" id="id_address">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div id="div_id_image" class="form-group">
+                                                                        <label for="id_image" class="">
+                                                                            Image
+                                                                        </label>
+                                                                        <div><input type="url" name="image"
+                                                                                    maxlength="200"
+                                                                                    class="urlinput form-control"
+                                                                                    value="{{ item.image }}"
+                                                                                    id="id_image"></div>
+                                                                    </div>
+                                                                    <div id="div_id_website" class="form-group">
+                                                                        <label for="id_website" class="">
+                                                                            Website
+                                                                        </label>
+                                                                        <div><input type="url" name="website"
+                                                                                    maxlength="200"
+                                                                                    value="{{ item.website }}"
+                                                                                    class="urlinput form-control"
+                                                                                    id="id_website"></div>
+                                                                    </div>
+                                                                    <div class="d-flex ">
+                                                                        <button type="button"
+                                                                                class="btn btn-danger btn-sm btn-sm float-right"
+                                                                                data-bs-dismiss="modal">Cancel
+                                                                        </button>
+                                                                        <button type="submit"
+                                                                                class="btn btn-info btn-sm btn-sm mx-5 float-right">
+                                                                            Edit
+                                                                        </button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </li>
+                                            <li>
+                                                <a type="button" data-bs-toggle="modal"
+                                                   data-bs-target="#modal-delete_{{ item.id }}"
+                                                   class="edit" style="box-shadow: none;">
+                                                    <i class="uil uil-trash-alt"></i>
+                                                </a>
+
+                                                <div class="modal-basic modal fade" id="modal-delete_{{ item.id }}"
+                                                     tabindex="-1"
+                                                     style="display: none;" aria-hidden="true">
+                                                    <div class="modal-dialog modal-md" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-body">
+                                                                <div class="modal-info-body d-flex">
+                                                                    <div class="modal-info-icon warning">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                             width="24" height="24" viewBox="0 0 24 24"
+                                                                             fill="none" stroke="currentColor"
+                                                                             stroke-width="2" stroke-linecap="round"
+                                                                             stroke-linejoin="round"
+                                                                             class="svg replaced-svg">
+                                                                            <circle cx="12" cy="12" r="10"></circle>
+                                                                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                                                                            <line x1="12" y1="16" x2="12.01"
+                                                                                  y2="16"></line>
+                                                                        </svg>
+                                                                    </div>
+                                                                    <div class="modal-info-text">
+                                                                        <h6>Do you Want to delete these items?</h6>
+                                                                        <p>{{ item.business_name }}...</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer ">
+                                                                <form action="{% url 'history_delete' %}" method="post"
+                                                                      style="display: flex;justify-content: space-between">
+                                                                    {% csrf_token %}
+                                                                    <input type="hidden" value="{{ item.id }}"
+                                                                           name="history_id">
+                                                                    <button type="button"
+                                                                            class="btn btn-danger  btn-sm"
+                                                                            data-bs-dismiss="modal">No
+                                                                    </button>
+                                                                    <button type="submit"
+                                                                            class="btn btn-success btn-sm  btn-sm mx-5">
+                                                                        Yes
+                                                                    </button>
+                                                                </form>
+
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+
+
+                            {% endfor %}
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex justify-content-end pt-30">
+                        <nav class="dm-page ">
+                            <ul class="dm-pagination d-flex">
+                                {% if is_paginated %}
+                                    <li class="dm-pagination__item">
+                                        {% if page_obj.has_previous %}
+                                            <a href="{% paginate_url page_obj.previous_page_number 'page' request.GET.urlencode %}"
+                                               class="dm-pagination__link pagination-control"><span
+                                                    class="la la-angle-left"></span></a>
+                                        {% else %}
+                                            <a href="#" class="dm-pagination__link pagination-control"><span
+                                                    class="la la-angle-left"></span></a>
+                                        {% endif %}
+                                        {% get_proper_elided_page_range paginator page_obj.number as page_range %}
+                                        {% for i in page_range %}
+                                            {% if page_obj.number == i %}
+                                                <a href="#" class="dm-pagination__link active"><span
+                                                        class="page-number">{{ i }}</span></a>
+                                            {% else %}
+                                                <a href="{% paginate_url i 'page' request.GET.urlencode %}"
+                                                   class="dm-pagination__link"><span
+                                                        class="page-number">{{ i }}</span></a>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if page_obj.has_next %}
+                                            <a href="{% paginate_url page_obj.next_page_number 'page' request.GET.urlencode %}"
+                                               class="dm-pagination__link pagination-control"><span
+                                                    class="la la-angle-right"></span></a>
+                                        {% else %}
+                                            <a href="#" class="dm-pagination__link pagination-control"><span
+                                                    class="la la-angle-right"></span></a>
+
+                                        {% endif %}
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+{% endblock %}

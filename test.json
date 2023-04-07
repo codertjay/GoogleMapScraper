@@ -1,0 +1,152 @@
+{
+  'html_attributions': [],
+  'results': [
+    {
+      'formatted_address': 'Lagos, Nigeria',
+      'geometry': {
+        'location': {
+          'lat': 6.5243793,
+          'lng': 3.3792057
+        },
+        'viewport': {
+          'northeast': {
+            'lat': 6.7027591,
+            'lng': 3.4696459
+          },
+          'southwest': {
+            'lat': 6.393351099999999,
+            'lng': 3.0982732
+          }
+        }
+      },
+      'icon': 'https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/geocode-71.png',
+      'icon_background_color': '#7B9EB0',
+      'icon_mask_base_uri': 'https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet',
+      'name': 'Lagos',
+      'photos': [
+        {
+          'height': 960,
+          'html_attributions': [
+            '<a href="https://maps.google.com/maps/contrib/105061217841224560823">A Google User</a>'
+          ],
+          'photo_reference': 'AUjq9jlku5N4SNvLr-AqNngJoPxWV7zSioTAv495Uifqk_K0__6Ah4lz-EqNcHrK3O8WOQGJ36SVhCRIUlZIoVxdjsU0lh11Vr3lQAafO_5hVjFGZGC-xI45XLBOtq9zF9Bz09Zo36vlXIXAIX8ouEoJWMLzwxFdRM-1eindvUKvmiWyaLt1',
+          'width': 776
+        }
+      ],
+      'place_id': 'ChIJwYCC5iqLOxARy9nDZ6OHntw',
+      'reference': 'ChIJwYCC5iqLOxARy9nDZ6OHntw',
+      'types': [
+        'locality',
+        'political'
+      ]
+    }
+  ],
+  'status': 'OK'
+}
+
+{
+  'html_attributions': [],
+  'results': [
+    {
+      'business_status': 'OPERATIONAL',
+      'formatted_address': 'Champ de Mars, 5 Av. Anatole France, 75007 Paris, France',
+      'geometry': {
+        'location': {
+          'lat': 48.85837009999999,
+          'lng': 2.2944813
+        },
+        'viewport': {
+          'northeast': {
+            'lat': 48.85974697989273,
+            'lng': 2.29610765
+          },
+          'southwest': {
+            'lat': 48.85704732010728,
+            'lng': 2.29251745
+          }
+        }
+      },
+      'icon': 'https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png',
+      'icon_background_color': '#13B5C7',
+      'icon_mask_base_uri': 'https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet',
+      'name': 'Eiffel Tower',
+      'opening_hours': {
+        'open_now': False
+      },
+      'photos': [
+        {
+          'height': 660,
+          'html_attributions': [
+            '<a href="https://maps.google.com/maps/contrib/100968979814345776530">Nguyen NoChanh</a>'
+          ],
+          'photo_reference': 'AUjq9jl_dPLsxC0jLFvsr14XJzHw997xV4GtCZEvjbN5spJCWBictQw4YpQaCVaQY-5GgNVOAtxJbZchV4LbnEL2IwNJoVKhUux24fYTL6h7vSzbbXpYpvPL5WWlBlT6p29HG6d3DZ0PxvoDCsvr53Kamp1J7-IyGIVFSZCq-EFoEIK0Y98o',
+          'width': 1000
+        }
+      ],
+      'place_id': 'ChIJLU7jZClu5kcR4PcOOO6p3I0',
+      'plus_code': {
+        'compound_code': 'V75V+8Q Paris, France',
+        'global_code': '8FW4V75V+8Q'
+      },
+      'rating': 4.6,
+      'reference': 'ChIJLU7jZClu5kcR4PcOOO6p3I0',
+      'types': [
+        'tourist_attraction',
+        'point_of_interest',
+        'establishment'
+      ],
+      'user_ratings_total': 337246
+    },
+    {
+      'business_status': 'OPERATIONAL',
+      'formatted_address': '5 Av. Anatole France 3è étage, 75007 Paris, France',
+      'geometry': {
+        'location': {
+          'lat': 48.858052,
+          'lng': 2.2948624
+        },
+        'viewport': {
+          'northeast': {
+            'lat': 48.85948917989272,
+            'lng': 2.296403579892722
+          },
+          'southwest': {
+            'lat': 48.85678952010727,
+            'lng': 2.293703920107277
+          }
+        }
+      },
+      'icon': 'https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png',
+      'icon_background_color': '#13B5C7',
+      'icon_mask_base_uri': 'https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet',
+      'name': 'Bureau de Gustave Eiffel',
+      'opening_hours': {
+        'open_now': False
+      },
+      'photos': [
+        {
+          'height': 450,
+          'html_attributions': [
+            '<a href="https://maps.google.com/maps/contrib/105119166122925308209">A Google User</a>'
+          ],
+          'photo_reference': 'AUjq9jmJo3ry7j9GAf7dBoXClBkbvdh2nfpMszeCgBKL_x_XZt-lGON_fFIFyx4quLiUhfHuMvKHX2lntQoEQVF6GEeIkmtyI2jK798tqgNWjXkHLetJQJnOObKVxZ_ljdEsYUvxAsBZ0Vd9loCPBksffaEno8kEV_bBnhYfCvEG3l43p0Es',
+          'width': 682
+        }
+      ],
+      'place_id': 'ChIJEbu08-Fv5kcRxIdhEH5yCFo',
+      'plus_code': {
+        'compound_code': 'V75V+6W Paris, France',
+        'global_code': '8FW4V75V+6W'
+      },
+      'rating': 4.5,
+      'reference': 'ChIJEbu08-Fv5kcRxIdhEH5yCFo',
+      'types': [
+        'tourist_attraction',
+        'point_of_interest',
+        'establishment'
+      ],
+      'user_ratings_total': 814
+    }
+  ],
+  'status': 'OK'
+}

@@ -1,0 +1,396 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css %}
+
+    <style>
+
+        #map {
+            height: 100vh;
+            width: 100%;
+            position: relative;
+            z-index: 0;
+        }
+
+
+        .info-card {
+            position: absolute;
+            top: 200px;
+            left: 20px;
+            width: 300px;
+            z-index: 1;
+            background-color: white;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 767px) {
+            .info-card {
+                position: relative;
+                top: 20px; /* adjust this value to position the element below the #map element */
+                width: 300px;
+                z-index: 1;
+                background-color: white;
+                box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
+            }
+        }
+
+
+        .info-card .info-card-header {
+            background-color: #f8f9fa;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .info-card .info-card-header h4 {
+            margin: 0;
+        }
+
+        .info-card .info-card-body {
+            padding: 10px;
+        }
+
+        .result-image {
+            margin-bottom: 10px;
+        }
+
+        .result-image img {
+            width: 100%;
+            height: auto;
+        }
+
+        .result-info {
+            margin-top: 10px;
+        }
+
+        .result-title {
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .result-address,
+        .result-phone,
+        .result-website {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        .result-website a {
+            background: rgba(var(--color-primary-rgba), .082);
+            color: var(--color-primary);
+            font-size: 15px;
+            font-weight: 600;
+            height: 48px;
+        }
+
+
+        #search-map {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 500px;
+            height: 40px;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
+            font-size: 16px;
+            z-index: 1;
+        }
+
+        @media (max-width: 767px) {
+            #search-map {
+                left: 10px !important;
+                top: 60px !important;
+                width: auto !important;
+            }
+        }
+
+        .list-item {
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            margin-bottom: 5px;
+        }
+
+
+        .cancel-btn {
+            color: #fff;
+            margin-left: auto;
+            font-size: 16px;
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+        }
+
+        .country-list {
+            display: flex;
+
+        }
+
+        .list-container {
+            margin-left: 10px;
+        }
+
+        .custom-flex-item {
+            max-width: calc(50% - 10px); /* set a maximum width for each flex item */
+            /*
+            The maximum width is calculated as half of the container width minus 10px (half of the maximum space between items)
+            */
+        }
+    </style>
+
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="breadcrumb-main">
+                <h4 class="text-capitalize breadcrumb-title">Map</h4>
+                <div class="breadcrumb-action justify-content-center flex-wrap">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#"><i class="uil uil-estate"></i>Home</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Map</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 mb-xl-50 mb-30">
+            <div class="row justify-content-center">
+                <div class="col-md-4 mt-4">
+                    <div class="search-style-2 global-shadow ">
+
+                        <div class="dm-select d-flex">
+                            <i class="uil uil-cutlery" style="position:absolute;top:2px"></i>
+                            <input list="categories"
+                                   name="select-size-1"
+                                   id="id-category"
+                                   placeholder="Select a Category"
+                                   class="form-control form-control-lg">
+                            <datalist id="categories">
+                                <option value="accounting">
+                                <option value="airport">
+                                <option value="amusement_park">
+                                <option value="aquarium">
+                                <option value="art_gallery">
+                                <option value="atm">
+                                <option value="bakery">
+                                <option value="bank">
+                                <option value="bar">
+                                <option value="beauty_salon">
+                                <option value="bicycle_store">
+                                <option value="book_store">
+                                <option value="bowling_alley">
+                                <option value="bus_station">
+                                <option value="cafe">
+                                <option value="campground">
+                                <option value="car_dealer">
+                                <option value="car_rental">
+                                <option value="car_repair">
+                                <option value="car_wash">
+                                <option value="casino">
+                                <option value="cemetery">
+                                <option value="church">
+                                <option value="city_hall">
+                                <option value="clothing_store">
+                                <option value="convenience_store">
+                                <option value="courthouse">
+                                <option value="dentist">
+                                <option value="department_store">
+                                <option value="doctor">
+                                <option value="drugstore">
+                                <option value="electrician">
+                                <option value="electronics_store">
+                                <option value="embassy">
+                                <option value="fire_station">
+                                <option value="florist">
+                                <option value="funeral_home">
+                                <option value="furniture_store">
+                                <option value="gas_station">
+                                <option value="gym">
+                                <option value="hair_care">
+                                <option value="hardware_store">
+                                <option value="hindu_temple">
+                                <option value="home_goods_store">
+                                <option value="hospital">
+                                <option value="insurance_agency">
+                                <option value="jewelry_store">
+                                <option value="laundry">
+                                <option value="lawyer">
+                                <option value="library">
+                                <option value="liquor_store">
+                                <option value="local_government_office">
+                                <option value="locksmith">
+                                <option value="lodging">
+                                <option value="hotels">
+                                <option value="motels">
+                                <option value="apartments">
+                                <option value="meal_delivery">
+                                <option value="meal_takeaway">
+                                <option value="mosque">
+                                <option value="movie_rental">
+                                <option value="movie_theater">
+                                <option value="moving_company">
+                                <option value="museum">
+                                <option value="night_club">
+                                <option value="painter">
+                                <option value="park">
+                                <option value="parking">
+                                <option value="pet_store">
+                                <option value="pharmacy">
+                                <option value="physiotherapist">
+                                <option value="plumber">
+                                <option value="police">
+                                <option value="post_office">
+                                <option value="primary_school">
+                                <option value="real_estate_agency">
+                                <option value="restaurant">
+                                <option value="roofing_contractor">
+                                <option value="rv_park">
+                                <option value="school">
+                                <option value="secondary_school">
+                                <option value="shoe_store">
+                                <option value="shopping_mall">
+                                <option value="spa">
+                                <option value="stadium">
+                                <option value="storage">
+                                <option value="store">
+                                <option value="subway_station">
+                                <option value="supermarket">
+                                <option value="synagogue">
+                                <option value="taxi_stand">
+                                <option value="tourist_attraction">
+                                <option value="train_station">
+                                <option value="transit_station">
+                                <option value="travel_agency">
+                                <option value="transit_station">
+                                <option value="university">
+                                <option value="transit_station">
+                                <option value="veterinary_care">
+                                <option value="zoo">
+
+
+                            </datalist>
+                        </div>
+
+                    </div>
+                    <div class="col-12 d-flex flex-wrap justify-content-start" id="category-list">
+
+                    </div>
+                </div>
+                <div class="col-md-4 mt-4">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="search-style-2 global-shadow ">
+                                <form action="" class="d-flex align-items-center">
+
+                                    <div class="location-search">
+                                        <i class="uil uil-location-point"></i>
+                                        <input class="form-control border-0 box-shadow-none country-select"
+                                               type="search"
+                                               placeholder="US, Uk, or NG" aria-label="Search">
+                                    </div>
+                                    <button type="submit" id="submitBtn" class="d-none" disabled>Submit</button>
+
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-12 d-flex flex-wrap justify-content-start" id="country-list">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mt-4">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="search-style-2 global-shadow ">
+
+                                <button class="btn btn-primary btn-lg" onclick="searchAllPlaces()">
+                                    search
+                                </button>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="container" style="margin-top: 20px">
+                        <div class="col-12">
+                            <!-- Google map -->
+                            <input id="search-map" class="form-control" type="text" placeholder="Enter a location">
+
+                            <div id="map"></div>
+                            <div class="info-card">
+                                <div class="info-card-header">
+                                    <h4>Search Results</h4>
+                                </div>
+                                <div class="info-card-body">
+                                    <div class="search-results">
+                                        <div class="result-image">
+                                            <img src="" alt="" id="place-image"
+                                                 style="max-height: 200px;">
+                                        </div>
+                                        <div class="result-info">
+                                            <h5 class="result-title" id="place-name"></h5>
+                                            <p class="result-address" id="place-address"></p>
+                                            <p class="result-phone" id="place-phone"></p>
+                                            <p class="result-website" id="place-website"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+    </div>
+
+
+{% endblock %}
+
+{% block script %}
+
+
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key={{ api_key }}&callback=initMap"
+            async defer></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

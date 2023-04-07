@@ -1,0 +1,233 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HexaDash</title>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static "css/plugin.min.css" %}">
+    <link rel="stylesheet" href="{% static "style.css" %}">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static "img/favicon.png" %}">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    {% block css %}
+
+    {% endblock %}
+</head>
+
+<body class="layout-light side-menu">
+<div class="mobile-search">
+    <form action="/" class="search-form">
+        <img src="img/svg/search.svg" alt="search" class="svg">
+        <input class="form-control me-sm-2 box-shadow-none" type="search" placeholder="Search..." aria-label="Search">
+    </form>
+</div>
+<div class="mobile-author-actions"></div>
+<header class="header-top">
+    <nav class="navbar navbar-light">
+        <div class="navbar-left">
+            <div class="logo-area">
+                <a class="navbar-brand" href="{% url "map" %}">
+                    <img class=" dark" src="{% static 'img/logo-dark.png' %}" alt="logo">
+                    <img class="light" src="{% static 'img/logo-white.png' %}" alt="logo">
+                </a>
+                <a href="#" class="sidebar-toggle">
+                    <img class="svg" src="{% static 'img/svg/align-center-alt.svg' %}" alt="img"></a>
+            </div>
+
+
+        </div>
+
+        <div class="navbar-right">
+            <ul class="navbar-right__menu">
+                <li class="nav-search">
+                    <a href="#" class="search-toggle">
+                        <i class="uil uil-search"></i>
+                        <i class="uil uil-times"></i>
+                    </a>
+                    <form action="/" class="search-form-topMenu">
+                        <span class="search-icon uil uil-search"></span>
+                        <input class="form-control me-sm-2 box-shadow-none" type="search" placeholder="Search..."
+                               aria-label="Search">
+                    </form>
+                </li>
+
+
+                <li class="nav-author">
+                    <div class="dropdown-custom">
+                        <a href="javascript:;" class="nav-item-toggle"><img
+                                src="{% static 'img/author-nav.jpg' %}" alt=""
+                                class=" rounded-circle">
+                            <span class="nav-item__title">{{ request.user.username }}<i
+                                    class="las la-angle-down nav-item__arrow"></i></span>
+                        </a>
+                        <div class="dropdown-parent-wrapper">
+                            <div class="dropdown-wrapper">
+                                <div class="nav-author__info">
+                                    <div class="author-img">
+                                        <img src="{% static 'img/author-nav.jpg' %}" alt="" class="rounded-circle">
+                                    </div>
+                                    <div>
+                                        <h6>{{ request.user.username }}</h6>
+                                    </div>
+                                </div>
+                                <div class="nav-author__options">
+
+                                    <a href="{% url "account_logout" %}" class="nav-author__signout">
+                                        <i class="uil uil-sign-out-alt"></i> Sign Out</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+
+            <div class="navbar-right__mobileAction d-md-none">
+                <a href="#" class="btn-search">
+                    <img src="{% static 'img/svg/search.svg' %}" alt="search" class="svg feather-search">
+                    <img src="{% static 'img/svg/x.svg' %}" alt="x" class="svg feather-x"></a>
+                <a href="#" class="btn-author-action">
+                    <img class="svg" src="{% static "img/svg/more-vertical.svg" %}" alt="more-vertical"></a>
+            </div>
+        </div>
+
+    </nav>
+</header>
+<main class="main-content">
+    <div class="sidebar-wrapper">
+        <div class="sidebar sidebar-collapse" id="sidebar">
+            <div class="sidebar__menu-group">
+                <ul class="sidebar_nav">
+
+                    <li class="">
+                        <a href="{% url "map" %}">
+                            <span class="nav-icon uil  uil-map-marker"></span>
+                            <span class="menu-text">Map</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="{% url "search_with_csv" %}">
+                            <span class="nav-icon uil  uil-search"></span>
+                            <span class="menu-text">Search</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="{% url "history_list" %}">
+                            <span class="nav-icon uil uil-history"></span>
+                            <span class="menu-text">History</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="{% url "admin_history" %}">
+                            <span class="nav-icon uil uil-history-alt"></span>
+                            <span class="menu-text">All History</span>
+                        </a>
+                    </li>
+
+
+                    {% if not request.user.is_authenticated %}
+                        <li class="">
+                            <a href="{% url "account_login" %}">
+                                <span class="nav-icon uil uil-signin"></span>
+                                <span class="menu-text">Log In</span>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="{% url "account_signup" %}">
+                                <span class="nav-icon uil uil-sign-out-alt"></span>
+                                <span class="menu-text">Sign Up</span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="">
+                            <a href="{% url "account_logout" %}">
+                                <span class="nav-icon uil uil-sign-out-alt"></span>
+                                <span class="menu-text">Logout </span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="contents">
+        <div class="container-fluid">
+            <div class="social-dash-wrap">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert {% if messages.tags == 'info' or message.tags == 'success' %}
+                                    alert-danger text-white {% else %} alert-{{ message.tags }}   {% endif %}
+                                    p-2 alert-dismissible fade show text-center text-capitalize shadow-sm" role="alert"
+                             style="">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% block content %}
+
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+    <footer class="footer-wrapper">
+        <div class="footer-wrapper__inside">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="footer-copyright">
+                            <p><span>© 2023</span><a href="#">Sovware</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="footer-menu text-end">
+                            <ul>
+                                <li>
+                                    <a href="#">About</a>
+                                </li>
+                                <li>
+                                    <a href="#">Team</a>
+                                </li>
+                                <li>
+                                    <a href="#">Contact</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</main>
+<div id="overlayer">
+    <div class="loader-overlay">
+        <div class="dm-spin-dots spin-lg">
+            <span class="spin-dot badge-dot dot-primary"></span>
+            <span class="spin-dot badge-dot dot-primary"></span>
+            <span class="spin-dot badge-dot dot-primary"></span>
+            <span class="spin-dot badge-dot dot-primary"></span>
+        </div>
+    </div>
+</div>
+<div class="overlay-dark-sidebar"></div>
+<div class="customizer-overlay"></div>
+{% block script %}
+
+{% endblock %}
+<script src="{% static "js/plugins.min.js" %}"></script>
+<script src="{% static "js/script.min.js" %}"></script>
+
+</body>
+
+</html>
