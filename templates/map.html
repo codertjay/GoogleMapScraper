@@ -83,28 +83,6 @@
         }
 
 
-        #search-map {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            width: 500px;
-            height: 40px;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
-            font-size: 16px;
-            z-index: 1;
-        }
-
-        @media (max-width: 767px) {
-            #search-map {
-                left: 10px !important;
-                top: 60px !important;
-                width: auto !important;
-            }
-        }
-
         .list-item {
             display: flex;
             align-items: center;
@@ -137,6 +115,43 @@
             The maximum width is calculated as half of the container width minus 10px (half of the maximum space between items)
             */
         }
+
+        .autocomplete-parent {
+            position: relative; /* add a relative positioning rule to the parent element */
+            max-width: 100%;
+            width: inherit;
+        }
+
+        .autocomplete-container {
+            position: absolute;
+            z-index: 1;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            top: calc(100% + 5px); /* position the container below the input field with a 5px offset */
+        }
+
+
+        .autocomplete-item {
+            display: block;
+            padding: 10px;
+            font-size: 16px;
+            color: #444;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            margin-left: 5px;
+        }
+
+        .autocomplete-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .autocomplete-item.active {
+            background-color: #e9e9e9;
+        }
+
     </style>
 
 {% endblock %}
@@ -277,11 +292,20 @@
 
                             </datalist>
                         </div>
+                        {% comment %}<div class="dm-select d-flex">
+                            <i class="uil uil-cutlery" style="position:absolute;top:2px"></i>
+                            <input
+                                    name="select-size-1"
+                                    id="id-category"
+                                    placeholder="Select a Category"
+                                    class="form-control form-control-lg">
+                        </div>
+                        <div class="autocomplete-parent autocomplete-country" id="autocomplete-category">
+
+                        </div>{% endcomment %}
 
                     </div>
-                    <div class="col-12 d-flex flex-wrap justify-content-start" id="category-list">
 
-                    </div>
                 </div>
                 <div class="col-md-4 mt-4">
                     <div class="row">
@@ -293,14 +317,23 @@
                                         <i class="uil uil-location-point"></i>
                                         <input class="form-control border-0 box-shadow-none country-select"
                                                type="search"
+                                               id="autocomplete-input"
                                                placeholder="US, Uk, or NG" aria-label="Search">
+
+
                                     </div>
+
                                     <button type="submit" id="submitBtn" class="d-none" disabled>Submit</button>
 
                                 </form>
+                                <div class="autocomplete-parent autocomplete-country" id="autocomplete-country">
+
+                                </div>
+
                             </div>
+
                         </div>
-                        <div class="col-12 d-flex flex-wrap justify-content-start" id="country-list">
+                        <div class="col-12 d-flex flex-wrap justify-content-start mt-4" id="country-list">
 
                         </div>
                     </div>
@@ -331,7 +364,6 @@
                     <div class="container" style="margin-top: 20px">
                         <div class="col-12">
                             <!-- Google map -->
-                            <input id="search-map" class="form-control" type="text" placeholder="Enter a location">
 
                             <div id="map"></div>
                             <div class="info-card">

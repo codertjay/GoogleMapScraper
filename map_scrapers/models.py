@@ -4,6 +4,9 @@ from django.db import models
 
 # Create your models here.
 
+class SearchInfo(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
+
 
 class History(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)

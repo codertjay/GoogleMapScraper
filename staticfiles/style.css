@@ -27737,7 +27737,7 @@ body:after {
     font-size: 15px;
     font-weight: 400;
     line-height: 1.6666666667;
-    color: var(--color-lighten)
+        color: #151515;
 }
 
 .search-style-2 form .job-search input::-webkit-input-placeholder,

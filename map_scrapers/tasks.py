@@ -84,30 +84,16 @@ get_social_media_links("https://leola.ng/?y_source=1_MTUzNjA3OTQtNzE1LWxvY2F0aW9
 
 
 @shared_task
-def get_all_place(query, categories, user_id):
+def get_all_place(query, category, user_id):
     """
    This get all the places
     """
     # split with the string
-    categories = categories.strip("[]").split(",")
-    print(categories)
-    if categories:
-        # loop through the categories
-        if len(categories) > 0:
-            # check the length of the category
-            for item in categories:
-                url = f'https://maps.googleapis.com/maps/api/place/textsearch/json?query={item}+in+{query}&key={api_key}'
-                response = requests.get(url)
-                if response.status_code == 200:
-                    for item in response.json().get("results"):
-                        print(item.get("place_id"))
-                        get_place_detail_and_save.delay(item.get("place_id"), user_id)
-                print("Completed")
-    else:
-        # search without category
-        url = f'https://maps.googleapis.com/maps/api/place/textsearch/json?key={api_key}&query={query}'
+    query = query.strip("[]").split(",")
+    print(query)
+    for item in query:
+        url = f'https://maps.googleapis.com/maps/api/place/textsearch/json?query={category}+in+{item}&key={api_key}'
         response = requests.get(url)
-        # Make the request using the proxy dictionary
         if response.status_code == 200:
             for item in response.json().get("results"):
                 print(item.get("place_id"))

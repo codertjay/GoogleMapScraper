@@ -1,4 +1,5 @@
 # Create your views here.
+import base64
 import csv
 
 import requests
@@ -29,29 +30,49 @@ def search_api(request):
 
 
 def place_detail(request):
-    print("access detail")
+    """
+    this is used to get a place detail and returns the info
+    :param request:
+    :return:
+    """
     query = request.GET.get('query')
     # Get the single place
     url = f'https://maps.googleapis.com/maps/api/place/textsearch/json?key={api_key}&query={query}'
     response = requests.get(url, proxies=proxies)
+    if not response.status_code == 200:
+        return JsonResponse(status=400)
+    data = response.json().get("results")[0]
 
-    return JsonResponse(response.json())
+    if data.get("photos"):
+        photo_reference = data.get('photos')[0].get('photo_reference')
+        image_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={api_key}"
+        response = requests.get(image_url, allow_redirects=True)
+
+        if response.status_code == 200:
+            image_data = response.content
+            image_b64 = base64.b64encode(image_data).decode('utf-8')
+            data["photo"] = f"data:image/jpeg;base64,{image_b64}"
+        else:
+            data["photo"] = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSX1mtYL8f3jCPWwGO9yCiCJlbi8LikmuJMew"
+
+    return JsonResponse(data)
 
 
 def autocomplete_api(request):
-    print("access here")
+    """
+    this is used to show the auto  complete suggestion for the frontend
+    :param request:
+    :return:
+    """
     query = request.GET.get('query')
-    country_codes = request.GET.getlist('country_code')  # Use getlist to get an array of values
-
+    type = request.GET.get('type')
     # Replace YOUR_API_KEY with your actual API key and YOUR_PROXY_URL with your proxy URL
     api_key = config("GOOGLE_MAP_API_KEY")
 
-    # Build the request URL with the appropriate parameters
-    #
-    url = f'https://maps.googleapis.com/maps/api/place/autocomplete/json?key={api_key}&input={query}&types=(regions)'
-    if country_codes:  # If country codes were provided, join them with a pipe to create the components parameter
-        components = 'country:' + '|'.join(country_codes)
-        url += f'&components={components}'
+    if type:
+        url = f'https://maps.googleapis.com/maps/api/place/autocomplete/json?key={api_key}&input={query}&types=establishment'
+    else:
+        url = f'https://maps.googleapis.com/maps/api/place/autocomplete/json?key={api_key}&input={query}'
     # Make the request using the proxy dictionary
     response = requests.get(url, proxies=proxies)
     # Return the response as a JSON object
@@ -60,6 +81,11 @@ def autocomplete_api(request):
 
 @login_required
 def map_view(request):
+    """
+    this shows the map itself
+    :param request:
+    :return:
+    """
     # Replace YOUR_API_KEY with your actual Google Maps API key
     api_key = config("GOOGLE_MAP_API_KEY")
     context = {'api_key': api_key}
@@ -102,7 +128,7 @@ class HistoryListView(LoginRequiredMixin, ListView):
         return context
 
 
-class AdminHistoryListView(StaffAndLoginRequiredMixin, ListView):
+class AdminHistoryListView(LoginRequiredMixin,ListView):
     queryset = History.objects.all()
     template_name = "history.html"
     paginate_by = 20
@@ -193,23 +219,6 @@ class DownloadAllCSVView(LoginRequiredMixin, View):
         else:
             csv = export_user_csv(user=self.request.user)
         return csv
-
-
-class SearchWithCSV(LoginRequiredMixin, View):
-    """
-    Search all data with csv
-    """
-
-    def get(self, request):
-        return render(request, "search.html")
-
-    def post(self, request):
-        csv = request.FILES.get("csv")
-        if not csv:
-            return redirect("search_with_csv")
-        read_search_csv(csv, self.request.user.id)
-        messages.info(request, "Searching params ..")
-        return redirect("search_with_csv")
 
 
 @login_required
