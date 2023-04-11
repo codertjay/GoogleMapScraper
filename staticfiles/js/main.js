@@ -6,9 +6,9 @@ let categoryItem = document.getElementById("id-category");
 
 let autocomplete;
 // Create a container element for the suggestions for Country
-var country_container = document.createElement('div');
+let country_container = document.createElement('div');
 country_container.classList.add('autocomplete-container');
-var autocomplete_country = document.getElementById("autocomplete-country");
+let autocomplete_country = document.getElementById("autocomplete-country");
 if (autocomplete_country) {
     autocomplete_country.appendChild(country_container);
 } else {
@@ -17,15 +17,18 @@ if (autocomplete_country) {
 
 /* End create container element for country suggestion*/
 
-// Create container element for category suggestion
-var category_container = document.createElement('div');
+// Create a container element for the suggestions for Country
+let category_container = document.createElement('div');
+let categoryList = document.getElementsByClassName('list-categories')[0]
 category_container.classList.add('autocomplete-container');
-var autocomplete_category = document.getElementById("autocomplete-category");
+let autocomplete_category = document.getElementById("autocomplete-category");
 if (autocomplete_category) {
     autocomplete_category.appendChild(category_container);
 } else {
     console.error("Element with ID 'autocomplete-category' not found.");
 }
+
+/* End create container element for category suggestion*/
 
 
 function initMap() {
@@ -43,7 +46,6 @@ function initMap() {
     countryItem.addEventListener("input", (event) => {
 
         // Get the value of the input field
-        var query = categoryItem.value;
 
         // Make a request to the API
         var xhr = new XMLHttpRequest();
@@ -73,34 +75,32 @@ function initMap() {
     });
 
     /* Event listen when typing country */
-    categoryItem.addEventListener("input", (event) => {
-
-        // Get the value of the input field
-        var query = input.value;
-
-        // Make a request to the API
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', "/autocomplete" + '?type=establishment' + '&query=' + encodeURIComponent(categoryItem.value));
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                // Parse the JSON response and display the suggestions
-                var response = JSON.parse(xhr.responseText);
-                var suggestions = response.predictions;
-                category_container.innerHTML = '';
-                suggestions.forEach(function (suggestion) {
-                    var item = document.createElement('div');
-                    item.classList.add('autocomplete-item');
-                    item.textContent = suggestion.description;
-                    item.addEventListener('click', function () {
-                        categoryItem.value = suggestion.description;
-                        category_container.innerHTML = '';
-                    });
-                    category_container.appendChild(item);
+    categoryItem.addEventListener('input', () => {
+        const inputText = categoryItem.value.toLowerCase();
+        let counter = 0; // initialize a counter variable
+        category_container.innerHTML = '';
+        // loop through the options and hide the ones that don't match the input
+        for (let i = 0; i < categoryList.options.length; i++) {
+            const option = categoryList.options[i];
+            const optionText = option.value.toLowerCase();
+            if (optionText.indexOf(inputText) !== -1) {
+                const item = document.createElement('div');
+                item.classList.add('autocomplete-item');
+                item.textContent = optionText;
+                item.addEventListener('click', () => {
+                    categoryItem.value = optionText;
+                    category_container.innerHTML = '';
                 });
+                category_container.appendChild(item);
+                counter++; // increment the counter
+                if (counter === 30) { // break the loop once the counter reaches 5
+                    break;
+                }
             }
-        };
-        xhr.send();
-    });
+        }
+    })
+
+    /* ENd listener*/
 
     function CreateCardImage(search_query) {
         // update auto complete
@@ -245,6 +245,8 @@ function getCookie(name) {
 }
 
 
+/* Category Auto Complete*/
 
 
+/*ENd Auto Complete*/
 

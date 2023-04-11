@@ -1,12 +1,13 @@
 # Create your views here.
 import base64
 import csv
-
+import json
 import requests
 from decouple import config
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.views import View
@@ -105,6 +106,7 @@ class HistoryListView(LoginRequiredMixin, ListView):
         `QuerySet` in which case `QuerySet` specific behavior will be enabled.
         """
         query = self.request.GET.get('search')
+        username = self.request.GET.get('username')
 
         queryset = self.queryset.filter(user=self.request.user)
         ordering = self.get_ordering()
@@ -114,6 +116,8 @@ class HistoryListView(LoginRequiredMixin, ListView):
             if isinstance(ordering, str):
                 ordering = (ordering,)
             queryset = queryset.order_by(*ordering)
+        if username:
+            queryset = queryset.filter(user__username=username)
 
         return queryset
 
@@ -125,10 +129,11 @@ class HistoryListView(LoginRequiredMixin, ListView):
         """
         context = super().get_context_data(**kwargs)
         context['item_form'] = HistoryUpdateForm()
+        context["users"] = User.objects.all()
         return context
 
 
-class AdminHistoryListView(LoginRequiredMixin,ListView):
+class AdminHistoryListView(LoginRequiredMixin, ListView):
     queryset = History.objects.all()
     template_name = "history.html"
     paginate_by = 20
@@ -141,6 +146,7 @@ class AdminHistoryListView(LoginRequiredMixin,ListView):
         `QuerySet` in which case `QuerySet` specific behavior will be enabled.
         """
         query = self.request.GET.get('search')
+        username = self.request.GET.get('username')
 
         queryset = self.queryset.filter()
         ordering = self.get_ordering()
@@ -150,6 +156,8 @@ class AdminHistoryListView(LoginRequiredMixin,ListView):
             if isinstance(ordering, str):
                 ordering = (ordering,)
             queryset = queryset.order_by(*ordering)
+        if username:
+            queryset = queryset.filter(user__username=username)
 
         return queryset
 

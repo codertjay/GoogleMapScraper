@@ -231,9 +231,3 @@ def create_item_task(decoded_file, user_id):
         except Exception as a:
             print("The error was ", a)
 
-
-"""
-
-
-
-"""

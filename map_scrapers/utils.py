@@ -62,16 +62,13 @@ def query_items(query, item):
     :return:
     """
     query_list = []
-    correct_query = TextBlob(str(query)).correct()
     query_list += query.split()
     query_list = sorted(query_list, key=lambda x: x[-1])
-    print(query_list)
     query = reduce(
         operator.or_,
         (Q(business_name=x) |
          Q(email__icontains=x) |
-         Q(address__icontains=x) |
-         Q(address__contains=x) |
+         Q(full_address__icontains=x) |
          Q(business_name__in=[x]) for x in query_list)
     )
     object_list = item.filter(query).distinct()

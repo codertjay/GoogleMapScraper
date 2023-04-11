@@ -25,25 +25,41 @@
             <div class="support-ticket-system support-ticket-system--search">
                 <div class="breadcrumb-main m-0 breadcrumb-main--table justify-content-sm-between ">
 
-                    <div class="support-form datatable-support-form d-flex justify-content-xxl-between justify-content-center align-items-center flex-wrap">
+                    <form action="." class="support-form datatable-support-form d-flex justify-content-xxl-between
+                    justify-content-between align-items-center flex-wrap">
+                        <div class="support-form__input-status m-3">
+                            <div class="dm-select " style="min-width: 250px;">
+                                <select name="username"
+                                        class="select-search form-control select2-hidden-accessible" data-select2-id="5"
+                                        tabindex="-1" aria-hidden="true">
+                                    {% if request.GET.username %}
+                                        <option value="{{ request.GET.username }}">{{ request.GET.username }}</option>
+                                    {% else %}
+                                        <option value="">All</option>
+                                    {% endif %}
+                                    {% for user in users %}
+                                        {% if request.GET.username != user.username %}
 
-                        <div class="support-form__search">
-                            <div class="support-order-search">
-                                <form action="." class="support-order-search__form">
-                                    <i class="uil uil-search"></i>
-
-                                    <input class="form-control border-0 box-shadow-none" type="search"
-                                           placeholder="Search"
-                                           style="min-width: 250px"
-                                           name="search"
-                                            {% if request.GET.search %}
-                                           value="{{ request.GET.search }}"
-                                            {% endif %}
-                                           aria-label="Search">
-                                </form>
+                                            <option value="{{ user.username }}"
+                                            >{{ user.username }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
-                    </div>
+                        <div class="d-flex m-3">
+                            <input class="form-control p-2" type="search"
+                                   placeholder="Search"
+                                   style="min-width: 250px"
+                                   name="search"
+                                    {% if request.GET.search %}
+                                   value="{{ request.GET.search }}"
+                                    {% endif %}
+                                   aria-label="Search">
+                        </div>
+                        <button class="support-form__input-button">search</button>
+
+                    </form>
 
 
                     <div class="action-btn mb-3">
@@ -72,6 +88,9 @@
                             <thead>
 
                             <tr class="userDatatable-header">
+                                <th>
+                                    <span class="projectDatatable-title">Action</span>
+                                </th>
                                 <th>
                                     <span class="projectDatatable-title">image</span>
                                 </th>
@@ -143,12 +162,24 @@
                             <tbody>
                             {% for item in page_obj %}
                                 <tr>
+                                    <td style="max-width: 10px">
+
+                                        <form action="{% url 'history_delete' %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" value="{{ item.id }}"
+                                                   name="history_id">
+
+                                            <button type="submit"
+                                                    class=" btn" style="box-shadow: none;">
+                                                <i class="uil uil-trash-alt text-danger"></i>
+                                            </button>
+                                        </form>
+
+                                    </td>
                                     <td>
-                                        <li>
-                                            <a href="{{ item.website }}" target="_blank"><img
-                                                    class="rounded-circle wh-34" src="{{ item.image }}"
-                                                    alt="author"></a>
-                                        </li>
+                                        <a href="{{ item.website }}" target="_blank"><img
+                                                class="rounded-circle  wh-34" src="{{ item.image }}"
+                                        ></a>
                                     </td>
                                     <td>
                                         <div class="userDatatable-content--subject">
@@ -187,7 +218,7 @@
                                     </td>
                                     <td>
                                         <div class="userDatatable-content--subject">
-                                            {{ item.opening_hours }}
+                                            {{ item.opening_hours|truncatechars:50 }}
                                         </div>
                                     </td>
                                     <td>
@@ -234,23 +265,23 @@
                                     </td>
                                     <td>
                                         <div class="userDatatable-content--subject">
-                                            {{ item.full_address }}
+                                            {{ item.full_address|truncatechars:50 }}
                                         </div>
                                     </td>
                                     <td>
                                         <div class="userDatatable-content--subject">
-                                            {{ item.street }}
+                                            {{ item.street|truncatechars:50 }}
                                         </div>
                                     </td>
                                     <td>
                                         <div class="userDatatable-content--subject">
-                                            {{ item.categories }}
+                                            {{ item.categories|truncatechars:50 }}
                                         </div>
                                     </td>
 
                                     <td>
                                         <div class="userDatatable-content--subject">
-                                            {{ item.social_media_links }}
+                                            {{ item.social_media_links|truncatechars:50 }}
                                         </div>
                                     </td>
                                     <td>
@@ -261,10 +292,65 @@
                                     </td>
 
 
-                                    <td>
-                                        <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
+                                </tr>
 
-                                            <li>
+
+                            {% endfor %}
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex justify-content-end pt-30">
+                        <nav class="dm-page ">
+                            <ul class="dm-pagination d-flex">
+                                {% if is_paginated %}
+                                    <li class="dm-pagination__item">
+                                        {% if page_obj.has_previous %}
+                                            <a href="{% paginate_url page_obj.previous_page_number 'page' request.GET.urlencode %}"
+                                               class="dm-pagination__link pagination-control"><span
+                                                    class="la la-angle-left"></span></a>
+                                        {% else %}
+                                            <a href="#" class="dm-pagination__link pagination-control"><span
+                                                    class="la la-angle-left"></span></a>
+                                        {% endif %}
+                                        {% get_proper_elided_page_range paginator page_obj.number as page_range %}
+                                        {% for i in page_range %}
+                                            {% if page_obj.number == i %}
+                                                <a href="#" class="dm-pagination__link active"><span
+                                                        class="page-number">{{ i }}</span></a>
+                                            {% else %}
+                                                <a href="{% paginate_url i 'page' request.GET.urlencode %}"
+                                                   class="dm-pagination__link"><span
+                                                        class="page-number">{{ i }}</span></a>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if page_obj.has_next %}
+                                            <a href="{% paginate_url page_obj.next_page_number 'page' request.GET.urlencode %}"
+                                               class="dm-pagination__link pagination-control"><span
+                                                    class="la la-angle-right"></span></a>
+                                        {% else %}
+                                            <a href="#" class="dm-pagination__link pagination-control"><span
+                                                    class="la la-angle-right"></span></a>
+
+                                        {% endif %}
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+{% endblock %}
+
+
+{% comment %} <li>
                                                 <a type="button" data-bs-toggle="modal"
                                                    data-bs-target="#modal-edit_{{ item.id }}"
                                                    class="edit" style="box-shadow: none;">
@@ -370,118 +456,4 @@
                                                     </div>
                                                 </div>
 
-                                            </li>
-                                            <li>
-                                                <a type="button" data-bs-toggle="modal"
-                                                   data-bs-target="#modal-delete_{{ item.id }}"
-                                                   class="edit" style="box-shadow: none;">
-                                                    <i class="uil uil-trash-alt"></i>
-                                                </a>
-
-                                                <div class="modal-basic modal fade" id="modal-delete_{{ item.id }}"
-                                                     tabindex="-1"
-                                                     style="display: none;" aria-hidden="true">
-                                                    <div class="modal-dialog modal-md" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-body">
-                                                                <div class="modal-info-body d-flex">
-                                                                    <div class="modal-info-icon warning">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                                             width="24" height="24" viewBox="0 0 24 24"
-                                                                             fill="none" stroke="currentColor"
-                                                                             stroke-width="2" stroke-linecap="round"
-                                                                             stroke-linejoin="round"
-                                                                             class="svg replaced-svg">
-                                                                            <circle cx="12" cy="12" r="10"></circle>
-                                                                            <line x1="12" y1="8" x2="12" y2="12"></line>
-                                                                            <line x1="12" y1="16" x2="12.01"
-                                                                                  y2="16"></line>
-                                                                        </svg>
-                                                                    </div>
-                                                                    <div class="modal-info-text">
-                                                                        <h6>Do you Want to delete these items?</h6>
-                                                                        <p>{{ item.business_name }}...</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer ">
-                                                                <form action="{% url 'history_delete' %}" method="post"
-                                                                      style="display: flex;justify-content: space-between">
-                                                                    {% csrf_token %}
-                                                                    <input type="hidden" value="{{ item.id }}"
-                                                                           name="history_id">
-                                                                    <button type="button"
-                                                                            class="btn btn-danger  btn-sm"
-                                                                            data-bs-dismiss="modal">No
-                                                                    </button>
-                                                                    <button type="submit"
-                                                                            class="btn btn-success btn-sm  btn-sm mx-5">
-                                                                        Yes
-                                                                    </button>
-                                                                </form>
-
-                                                            </div>
-                                                        </div>
-
-
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </td>
-                                </tr>
-
-
-                            {% endfor %}
-
-
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="d-flex justify-content-end pt-30">
-                        <nav class="dm-page ">
-                            <ul class="dm-pagination d-flex">
-                                {% if is_paginated %}
-                                    <li class="dm-pagination__item">
-                                        {% if page_obj.has_previous %}
-                                            <a href="{% paginate_url page_obj.previous_page_number 'page' request.GET.urlencode %}"
-                                               class="dm-pagination__link pagination-control"><span
-                                                    class="la la-angle-left"></span></a>
-                                        {% else %}
-                                            <a href="#" class="dm-pagination__link pagination-control"><span
-                                                    class="la la-angle-left"></span></a>
-                                        {% endif %}
-                                        {% get_proper_elided_page_range paginator page_obj.number as page_range %}
-                                        {% for i in page_range %}
-                                            {% if page_obj.number == i %}
-                                                <a href="#" class="dm-pagination__link active"><span
-                                                        class="page-number">{{ i }}</span></a>
-                                            {% else %}
-                                                <a href="{% paginate_url i 'page' request.GET.urlencode %}"
-                                                   class="dm-pagination__link"><span
-                                                        class="page-number">{{ i }}</span></a>
-                                            {% endif %}
-                                        {% endfor %}
-                                        {% if page_obj.has_next %}
-                                            <a href="{% paginate_url page_obj.next_page_number 'page' request.GET.urlencode %}"
-                                               class="dm-pagination__link pagination-control"><span
-                                                    class="la la-angle-right"></span></a>
-                                        {% else %}
-                                            <a href="#" class="dm-pagination__link pagination-control"><span
-                                                    class="la la-angle-right"></span></a>
-
-                                        {% endif %}
-                                    </li>
-                                {% endif %}
-                            </ul>
-                        </nav>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-
-    </div>
-
-{% endblock %}
+                                            </li>{% endcomment %}
