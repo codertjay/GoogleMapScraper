@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% load item_tags %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="breadcrumb-main">
+                <h4 class="text-capitalize breadcrumb-title">History</h4>
+                <div class="breadcrumb-action justify-content-center flex-wrap">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url "map" %}"><i class="uil uil-estate"></i>Map</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Search Info</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-30">
+            <div class="support-ticket-system support-ticket-system--search">
+
+
+                <div class="userDatatable userDatatable--ticket userDatatable--ticket--2 mt-1">
+                    <div class="table-responsive">
+                        <table class="table mb-0 table-borderless">
+                            <thead>
+
+                            <tr class="userDatatable-header">
+
+                                <th>
+                                    <span class="projectDatatable-title">Keyword</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">Progress</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">Platform</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">Status</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">Email</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">timestamp</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">Action</span>
+                                </th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for item in page_obj %}
+                                <tr>
+
+
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            <a href="{% url "history_list" item.id %}">
+                                                {{ item.keyword|truncatechars:30 }}
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.progress }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {% if item.status %}
+                                                Completed
+                                            {% else %}
+                                                In Progress
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.platform }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.scraped_places }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.timestamp }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            <div class="d-flex">
+                                                <a class="btn btn-white  btn-sm text-purple"
+                                                   href="{% url 'search_info_download' item.id %}">Download</a>
+                                                <a class="btn btn-sm" href="{% url 'history_list' item.id %}">view</a>
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                </tr>
+
+
+                            {% endfor %}
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex justify-content-end pt-30">
+                        <nav class="dm-page ">
+                            <ul class="dm-pagination d-flex">
+                                {% if is_paginated %}
+                                    <li class="dm-pagination__item">
+                                        {% if page_obj.has_previous %}
+                                            <a href="{% paginate_url page_obj.previous_page_number 'page' request.GET.urlencode %}"
+                                               class="dm-pagination__link pagination-control"><span
+                                                    class="la la-angle-left"></span></a>
+                                        {% else %}
+                                            <a href="#" class="dm-pagination__link pagination-control"><span
+                                                    class="la la-angle-left"></span></a>
+                                        {% endif %}
+                                        {% get_proper_elided_page_range paginator page_obj.number as page_range %}
+                                        {% for i in page_range %}
+                                            {% if page_obj.number == i %}
+                                                <a href="#" class="dm-pagination__link active"><span
+                                                        class="page-number">{{ i }}</span></a>
+                                            {% else %}
+                                                <a href="{% paginate_url i 'page' request.GET.urlencode %}"
+                                                   class="dm-pagination__link"><span
+                                                        class="page-number">{{ i }}</span></a>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if page_obj.has_next %}
+                                            <a href="{% paginate_url page_obj.next_page_number 'page' request.GET.urlencode %}"
+                                               class="dm-pagination__link pagination-control"><span
+                                                    class="la la-angle-right"></span></a>
+                                        {% else %}
+                                            <a href="#" class="dm-pagination__link pagination-control"><span
+                                                    class="la la-angle-right"></span></a>
+
+                                        {% endif %}
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+{% endblock %}
+

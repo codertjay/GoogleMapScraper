@@ -6,7 +6,7 @@ import requests
 from celery import shared_task
 from decouple import config
 
-from map_scrapers.models import History
+from map_scrapers.models import History, SearchInfo
 
 api_key = config("GOOGLE_MAP_API_KEY")
 
@@ -19,15 +19,18 @@ proxies = {
 
 
 def get_email_from_website(url):
-    """This gets an email address"""
-    response = requests.get(url)
-    # Extract all emails from the website
-    emails = re.findall(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', response.text)
-    # Join the emails into a comma-separated string
-    email_string = ", ".join(set(emails))
+    try:
+        """This gets an email address"""
+        response = requests.get(url)
+        # Extract all emails from the website
+        emails = re.findall(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', response.text)
+        # Join the emails into a comma-separated string
+        email_string = ", ".join(set(emails))
 
-    # Print the email string
-    return email_string
+        # Print the email string
+        return email_string
+    except:
+        return ""
 
 
 def get_social_media_links(url):
@@ -88,22 +91,31 @@ def get_all_place(query, category, user_id):
     """
    This get all the places
     """
+    search_info = SearchInfo.objects.create(
+        user_id=user_id,
+        platform="Google Map",
+        keyword=query.replace("[", "").replace('"', "").replace("]", "")
+    )
     # split with the string
     query = query.strip("[]").split(",")
+
     print(query)
     for item in query:
         url = f'https://maps.googleapis.com/maps/api/place/textsearch/json?query={category}+in+{item}&key={api_key}'
         response = requests.get(url)
         if response.status_code == 200:
+            counter = 0
             for item in response.json().get("results"):
+                counter += 1
                 print(item.get("place_id"))
-                get_place_detail_and_save.delay(item.get("place_id"), user_id)
-        print("Completed")
+                get_place_detail_and_save.delay(item.get("place_id"), user_id, search_info.id)
+            search_info.total_places = counter
+            search_info.save()
     return True
 
 
 @shared_task
-def get_place_detail_and_save(place_id, user_id):
+def get_place_detail_and_save(place_id, user_id, search_info_id):
     """
     this get a single place with the id provided
     :param place_id:
@@ -180,33 +192,40 @@ def get_place_detail_and_save(place_id, user_id):
             email = get_email_from_website(website)
 
             # check if the email exist with that user before
-            if not History.objects.filter(user_id=user_id, place_id=place_id).first():
-                history, created = History.objects.get_or_create(
-                    user_id=user_id,
-                    phone_number=phone_number,
-                    place_id=place_id,
-                    email=email,
-                    business_name=business_name,
-                    full_address=full_address,
-                    street=street,
-                    cid=cid,
-                    image=image,
-                    municipality=municipality,
-                    plus_code=plus_code,
-                    social_media_links=social_media_links,
-                    opening_hours=opening_hours,
-                    google_map_url=google_map_url,
-                    latitude=latitude,
-                    longitude=longitude,
-                    reviews_url=reviews_url,
-                    average_rating=average_rating,
-                    review_count=review_count,
-                    website=website,
-                    categories=categories,
-                    phones=phones,
-                )
-                print("History Created")
-            print("History Passed")
+            search_info = SearchInfo.objects.filter(id=search_info_id).first()
+            if search_info:
+                search_info.scraped_places += 1
+                search_info.save()
+                if search_info.scraped_places == search_info.total_places:
+                    search_info.completed = True
+                    search_info.save()
+
+            history, created = History.objects.get_or_create(
+                user_id=user_id,
+                search_info_id=search_info_id,
+                phone_number=phone_number,
+                place_id=place_id,
+                email=email,
+                business_name=business_name,
+                full_address=full_address,
+                street=street,
+                cid=cid,
+                image=image,
+                municipality=municipality,
+                plus_code=plus_code,
+                social_media_links=social_media_links,
+                opening_hours=opening_hours,
+                google_map_url=google_map_url,
+                latitude=latitude,
+                longitude=longitude,
+                reviews_url=reviews_url,
+                average_rating=average_rating,
+                review_count=review_count,
+                website=website,
+                categories=categories,
+                phones=phones,
+            )
+            print("History Created")
         except Exception as a:
             print(a)
         return True
@@ -230,4 +249,3 @@ def create_item_task(decoded_file, user_id):
             get_all_place.delay(query, category, user_id)
         except Exception as a:
             print("The error was ", a)
-

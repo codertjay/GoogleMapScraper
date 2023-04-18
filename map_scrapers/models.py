@@ -6,10 +6,23 @@ from django.db import models
 
 class SearchInfo(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
+    keyword = models.CharField(max_length=500, blank=True, null=True)
+    platform = models.CharField(max_length=500, blank=True, null=True)
+    completed = models.BooleanField(default=False)
+    total_places = models.IntegerField(default=0)
+    scraped_places = models.IntegerField(default=0)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    @property
+    def progress(self):
+        if self.total_places == 0:
+            self.total_places = 1
+        progress = (self.scraped_places / self.total_places) * 100
+        return progress
 
 
 class History(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
+    search_info = models.ForeignKey(SearchInfo, on_delete=models.CASCADE, blank=True, null=True)
     phone_number = models.CharField(max_length=250, blank=True, null=True)
     email = models.CharField(max_length=500, blank=True, null=True)
     business_name = models.CharField(max_length=250, blank=True, null=True)

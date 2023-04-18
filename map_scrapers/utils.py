@@ -5,9 +5,32 @@ from functools import reduce
 from django.db.models import Q
 from django.http import HttpResponse
 
-from map_scrapers.models import History
-from textblob import TextBlob
-from .tasks import get_all_place, create_item_task
+from map_scrapers.models import History, SearchInfo
+from .tasks import create_item_task
+
+
+def export_search_info_user_csv(search_info_id):
+    """
+    this returns the full info of all the product in csv format
+    :return:
+    """
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="History.csv"'
+    writer = csv.writer(response)
+
+    # Get a list of all fields of the model
+    fields = [f.name for f in History._meta.fields]
+
+    # Write the header row
+    writer.writerow(fields)
+    search_info = SearchInfo.objects.filter(id=search_info_id).first()
+    if not search_info:
+        return response
+    # Write the data rows
+    for obj in search_info.history_set.all():
+        row = [getattr(obj, f) for f in fields]
+        writer.writerow(row)
+    return response
 
 
 def export_user_csv(user):

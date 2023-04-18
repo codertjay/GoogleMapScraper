@@ -9,14 +9,15 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.http import JsonResponse, HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import ListView
 
 from map_scrapers.forms import HistoryUpdateForm
-from map_scrapers.models import History
+from map_scrapers.models import History, SearchInfo
 from map_scrapers.permissions import StaffAndLoginRequiredMixin
-from map_scrapers.utils import export_user_csv, query_items, export_all_csv, read_search_csv
+from map_scrapers.utils import export_user_csv, query_items, export_all_csv, read_search_csv, \
+    export_search_info_user_csv
 from map_scrapers.tasks import get_all_place, proxies, api_key
 
 
@@ -93,6 +94,22 @@ def map_view(request):
     return render(request, 'map.html', context)
 
 
+class SearchInfoListView(LoginRequiredMixin, ListView):
+    queryset = SearchInfo.objects.all()
+    template_name = "search_info.html"
+    paginate_by = 50
+
+    def get_queryset(self):
+        """
+        Return the list of items for this view.
+
+        The return value must be an iterable and may be an instance of
+        `QuerySet` in which case `QuerySet` specific behavior will be enabled.
+        """
+        queryset = self.queryset.filter(user=self.request.user)
+        return queryset
+
+
 class HistoryListView(LoginRequiredMixin, ListView):
     queryset = History.objects.all()
     template_name = "history.html"
@@ -105,10 +122,12 @@ class HistoryListView(LoginRequiredMixin, ListView):
         The return value must be an iterable and may be an instance of
         `QuerySet` in which case `QuerySet` specific behavior will be enabled.
         """
+        id = self.kwargs['id']
         query = self.request.GET.get('search')
         username = self.request.GET.get('username')
 
-        queryset = self.queryset.filter(user=self.request.user)
+        search_info = get_object_or_404(SearchInfo, id=id)
+        queryset = search_info.history_set.all()
         ordering = self.get_ordering()
         if query:
             queryset = query_items(item=queryset, query=query)
@@ -202,6 +221,13 @@ class HistoryDeleteView(LoginRequiredMixin, View):
             if history:
                 history.delete()
         return redirect("history_list")
+
+
+class ExportSearchInfoCSV(LoginRequiredMixin, View):
+
+    def get(self, request, **kwargs):
+        csv = export_search_info_user_csv(self.kwargs['id'])
+        return csv
 
 
 class DownloadUserCSVView(LoginRequiredMixin, View):
