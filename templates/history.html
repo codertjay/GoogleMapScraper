@@ -71,8 +71,7 @@
                                     <i class="uil uil-angle-down"></i>
                                 </button>
                                 <div class="dropdown-default dropdown-menu" style="">
-                                    <a class="dropdown-item" href="{% url 'csv_download' %}">Export</a>
-                                    <a class="dropdown-item" href="{% url 'csv_all_download' %}">Export All</a>
+                                    <a class="dropdown-item" href="{% url 'search_info_download' search_info_id %}">Export</a>
                                 </div>
                             </div>
                         </div>
@@ -92,22 +91,47 @@
                                     <span class="projectDatatable-title">Action</span>
                                 </th>
                                 <th>
-                                    <span class="projectDatatable-title">image</span>
-                                </th>
-                                <th>
-                                    <span class="projectDatatable-title">phone_number</span>
-                                </th>
-                                <th>
-                                    <span class="projectDatatable-title">email</span>
-                                </th>
-                                <th>
                                     <span class="projectDatatable-title">business_name</span>
                                 </th>
+                                <th>
+                                    <span class="projectDatatable-title">full_address</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">street</span>
+                                </th>
+
                                 <th>
                                     <span class="projectDatatable-title">municipality</span>
                                 </th>
                                 <th>
-                                    <span class="projectDatatable-title">plus_code</span>
+                                    <span class="projectDatatable-title">categories</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">Plus code</span>
+                                </th>
+
+                                <th>
+                                    <span class="projectDatatable-title">email</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">phone</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">phones</span>
+                                </th>
+
+                                <th>
+                                    <span class="projectDatatable-title">Social medias</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">Average Rating</span>
+                                </th>
+
+                                <th>
+                                    <span class="projectDatatable-title">Review count</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">Reviews url</span>
                                 </th>
                                 <th>
                                     <span class="projectDatatable-title">place_id</span>
@@ -127,33 +151,9 @@
                                 <th>
                                     <span class="projectDatatable-title">longitude</span>
                                 </th>
-                                <th>
-                                    <span class="projectDatatable-title">reviews_url</span>
-                                </th>
-                                <th>
-                                    <span class="projectDatatable-title">average_rating</span>
-                                </th>
-                                <th>
-                                    <span class="projectDatatable-title">review_count</span>
-                                </th>
-                                <th>
-                                    <span class="projectDatatable-title">website</span>
-                                </th>
-                                <th>
-                                    <span class="projectDatatable-title">full_address</span>
-                                </th>
-                                <th>
-                                    <span class="projectDatatable-title">street</span>
-                                </th>
-                                <th>
-                                    <span class="projectDatatable-title">categories</span>
-                                </th>
 
                                 <th>
-                                    <span class="projectDatatable-title">social_media_links</span>
-                                </th>
-                                <th>
-                                    <span class="projectDatatable-title">phones</span>
+                                    <span class="projectDatatable-title">website</span>
                                 </th>
 
 
@@ -176,24 +176,20 @@
                                         </form>
 
                                     </td>
-                                    <td>
-                                        <a href="{{ item.website }}" target="_blank"><img
-                                                class="rounded-circle  wh-34" src="{{ item.image }}"
-                                        ></a>
-                                    </td>
+
                                     <td>
                                         <div class="userDatatable-content--subject">
-                                            {{ item.phone_number }}
+                                            {{ item.business_name }}
                                         </div>
                                     </td>
                                     <td>
                                         <div class="userDatatable-content--subject">
-                                            {{ item.email }}
+                                            {{ item.municipality }}, {{ item.street }}
                                         </div>
                                     </td>
                                     <td>
                                         <div class="userDatatable-content--subject">
-                                            {{ item.business_name|truncatewords:3 }}
+                                            {{ item.street }}
                                         </div>
                                     </td>
                                     <td>
@@ -203,8 +199,53 @@
                                     </td>
                                     <td>
                                         <div class="userDatatable-content--subject">
+                                            {{ item.categories|truncatechars:50 }}
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="userDatatable-content--subject">
                                             {{ item.plus_code }}
                                         </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.email }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.phone_number }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.phones }}
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.social_media_links }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.review_count }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.average_rating }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="{{ item.reviews_url }}" target="_blank">
+                                            <div class="userDatatable-content--subject">
+                                                {{ item.reviews_url }}
+                                            </div>
+                                        </a>
                                     </td>
                                     <td>
                                         <div class="userDatatable-content--subject">
@@ -217,14 +258,14 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="userDatatable-content--subject">
-                                            {{ item.opening_hours|truncatechars:50 }}
+                                        <div class="userDatatable-content--subject" >
+                                            {{ item.opening_hours|truncatechars:30 }}
                                         </div>
                                     </td>
                                     <td>
                                         <a href="{{ item.google_map_url }}" target="_blank">
                                             <div class="userDatatable-content--subject">
-                                                {{ item.google_map_url|truncatechars:20 }}
+                                                {{ item.google_map_url }}
                                             </div>
                                         </a>
                                     </td>
@@ -238,57 +279,15 @@
                                             {{ item.longitude }}
                                         </div>
                                     </td>
-                                    <td>
-                                        <a href="{{ item.reviews_url }}" target="_blank">
-                                            <div class="userDatatable-content--subject">
-                                                {{ item.reviews_url|truncatechars:20 }}
-                                            </div>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <div class="userDatatable-content--subject">
-                                            {{ item.average_rating }}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="userDatatable-content--subject">
-                                            {{ item.review_count }}
-                                        </div>
-                                    </td>
+
+
                                     <td>
                                         <div class="userDatatable-content--priority">
                                             <a href="{{ item.website }}"
-                                               style="word-break: break-all;max-width: 300px;min-width: 100px;padding-top: 20px">
-                                                {{ item.website|truncatechars:30 }}
+                                               style="">
+                                                {{ item.website |truncatechars:30}}
                                             </a>
                                         </div>
-                                    </td>
-                                    <td>
-                                        <div class="userDatatable-content--subject">
-                                            {{ item.full_address|truncatechars:50 }}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="userDatatable-content--subject">
-                                            {{ item.street|truncatechars:50 }}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="userDatatable-content--subject">
-                                            {{ item.categories|truncatechars:50 }}
-                                        </div>
-                                    </td>
-
-                                    <td>
-                                        <div class="userDatatable-content--subject">
-                                            {{ item.social_media_links|truncatechars:50 }}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="userDatatable-content--subject">
-                                            {{ item.phones }}
-                                        </div>
-
                                     </td>
 
 

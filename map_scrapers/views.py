@@ -149,6 +149,7 @@ class HistoryListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['item_form'] = HistoryUpdateForm()
         context["users"] = User.objects.all()
+        context["search_info_id"] = self.kwargs['id']
         return context
 
 

@@ -23,62 +23,66 @@ def get_email_from_website(url):
         """This gets an email address"""
         response = requests.get(url)
         # Extract all emails from the website
-        emails = re.findall(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', response.text)
-        # Join the emails into a comma-separated string
-        email_string = ", ".join(set(emails))
+
+        emails = re.findall(r'\b(?!.*@sentry\.com)[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', response.text)
 
         # Print the email string
-        return email_string
-    except:
-        return ""
+        return emails[0]
+    except Exception as a:
+        print("a", a)
+        return None
 
 
 def get_social_media_links(url):
-    response = requests.get(url)
-    html_content = response.text
-
-    # Define regular expressions for each social media platform
-    facebook_regex = "(?:https?:)?\/\/(?:www\.)?(?:facebook|fb)\.com\/(?P<profile>(?![A-z]+\.php)(?!marketplace|gaming|watch|me|messages|help|search|groups)[A-z0-9_\-\.]+)\/?"
-    twitter_regex = "(?:https?:)?\/\/(?:[A-z]+\.)?twitter\.com\/@?(?!home|share|privacy|tos)(?P<username>[A-z0-9_]+)\/?"
-    youtube_channel_regex = "(?:https?:)?\/\/(?:[A-z]+\.)?youtube.com\/channel\/(?P<id>[A-z0-9-\_]+)\/?"
-    youtube_user_regex = "(?:https?:)?\/\/(?:[A-z]+\.)?youtube.com\/user\/(?P<username>[A-z0-9]+)\/?"
-    linkedin_regex = "(?:https?:)?\/\/(?:[\w]+\.)?linkedin\.com\/(?P<company_type>(company)|(school))\/(?P<company_permalink>[A-z0-9-À-ÿ\.]+)\/?"
-    instagram_regex = "(?:https?:)?\/\/(?:www\.)?(?:instagram\.com|instagr\.am)\/(?P<username>[A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)"
-
-    # Find all social media links in the HTML content
-    links = {
-        "Facebook": list(set(re.findall(facebook_regex, html_content))),
-        "Twitter": list(set(re.findall(twitter_regex, html_content))),
-        "Instagram": list(set(re.findall(instagram_regex, html_content))),
-        "LinkedIn": list(set(re.findall(linkedin_regex, html_content))),
-        "YouTube_Channel": list(set(re.findall(youtube_channel_regex, html_content))),
-        "YouTube_User": list(set(re.findall(youtube_user_regex, html_content))),
-    }
-
     social_media_links = ""
-    # Format the social media links as a string with the requested format
-    for key, value in links.items():
-        try:
-            if key == "Facebook":
-                if len(value) > 0:
-                    social_media_links += f"Facebook:  https://www.facebook.com/{value[-1]}/   "
-            elif key == "Twitter":
-                if len(value) > 0:
-                    social_media_links += f"Twitter:  https://www.Twitter.com/{value[-1]}/    "
-            elif key == "Instagram":
-                if len(value) > 0:
-                    social_media_links += f"Instagram:  https://www.Instagram.com/{value[-1]}/ "
-            elif key == "LinkedIn":
-                if len(value) > 0:
-                    social_media_links += f"LinkedIn:  https://www.LinkedIn.com/company/{value[-1][-1]}/  "
-            elif key == "YouTube_Channel":
-                if len(value) > 0:
-                    social_media_links += f"YouTube_Channel:  https://www.youtube.com/channel/{value[-1]}/  "
-            elif key == "YouTube_User":
-                if len(value) > 0:
-                    social_media_links += f"YouTube_Channel:  https://www.youtube.com/user/{value[-1]}/  "
-        except Exception as a:
-            print(a)
+
+    try:
+        response = requests.get(url)
+        html_content = response.text
+
+        # Define regular expressions for each social media platform
+        facebook_regex = "(?:https?:)?\/\/(?:www\.)?(?:facebook|fb)\.com\/(?P<profile>(?![A-z]+\.php)(?!marketplace|gaming|watch|me|messages|help|search|groups)[A-z0-9_\-\.]+)\/?"
+        twitter_regex = "(?:https?:)?\/\/(?:[A-z]+\.)?twitter\.com\/@?(?!home|share|privacy|tos)(?P<username>[A-z0-9_]+)\/?"
+        youtube_channel_regex = "(?:https?:)?\/\/(?:[A-z]+\.)?youtube.com\/channel\/(?P<id>[A-z0-9-\_]+)\/?"
+        youtube_user_regex = "(?:https?:)?\/\/(?:[A-z]+\.)?youtube.com\/user\/(?P<username>[A-z0-9]+)\/?"
+        linkedin_regex = "(?:https?:)?\/\/(?:[\w]+\.)?linkedin\.com\/(?P<company_type>(company)|(school))\/(?P<company_permalink>[A-z0-9-À-ÿ\.]+)\/?"
+        instagram_regex = "(?:https?:)?\/\/(?:www\.)?(?:instagram\.com|instagr\.am)\/(?P<username>[A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)"
+
+        # Find all social media links in the HTML content
+        links = {
+            "Facebook": list(set(re.findall(facebook_regex, html_content))),
+            "Twitter": list(set(re.findall(twitter_regex, html_content))),
+            "Instagram": list(set(re.findall(instagram_regex, html_content))),
+            "LinkedIn": list(set(re.findall(linkedin_regex, html_content))),
+            "YouTube_Channel": list(set(re.findall(youtube_channel_regex, html_content))),
+            "YouTube_User": list(set(re.findall(youtube_user_regex, html_content))),
+        }
+
+        # Format the social media links as a string with the requested format
+        for key, value in links.items():
+            try:
+                if key == "Facebook":
+                    if len(value) > 0:
+                        social_media_links += f"Facebook:  https://www.facebook.com/{value[-1]}/   "
+                elif key == "Twitter":
+                    if len(value) > 0:
+                        social_media_links += f"Twitter:  https://www.Twitter.com/{value[-1]}/    "
+                elif key == "Instagram":
+                    if len(value) > 0:
+                        social_media_links += f"Instagram:  https://www.Instagram.com/{value[-1]}/ "
+                elif key == "LinkedIn":
+                    if len(value) > 0:
+                        social_media_links += f"LinkedIn:  https://www.LinkedIn.com/company/{value[-1][-1]}/  "
+                elif key == "YouTube_Channel":
+                    if len(value) > 0:
+                        social_media_links += f"YouTube_Channel:  https://www.youtube.com/channel/{value[-1]}/  "
+                elif key == "YouTube_User":
+                    if len(value) > 0:
+                        social_media_links += f"YouTube_Channel:  https://www.youtube.com/user/{value[-1]}/  "
+            except Exception as a:
+                print(a)
+    except:
+        pass
 
     return social_media_links
 
@@ -196,35 +200,35 @@ def get_place_detail_and_save(place_id, user_id, search_info_id):
             if search_info:
                 search_info.scraped_places += 1
                 search_info.save()
-                if search_info.scraped_places == search_info.total_places:
+                if search_info.scraped_places >= search_info.total_places:
                     search_info.completed = True
                     search_info.save()
 
-            history, created = History.objects.get_or_create(
-                user_id=user_id,
-                search_info_id=search_info_id,
-                phone_number=phone_number,
-                place_id=place_id,
-                email=email,
-                business_name=business_name,
-                full_address=full_address,
-                street=street,
-                cid=cid,
-                image=image,
-                municipality=municipality,
-                plus_code=plus_code,
-                social_media_links=social_media_links,
-                opening_hours=opening_hours,
-                google_map_url=google_map_url,
-                latitude=latitude,
-                longitude=longitude,
-                reviews_url=reviews_url,
-                average_rating=average_rating,
-                review_count=review_count,
-                website=website,
-                categories=categories,
-                phones=phones,
-            )
+                history, created = History.objects.get_or_create(
+                    user_id=user_id,
+                    search_info_id=search_info_id,
+                    phone_number=phone_number,
+                    place_id=place_id,
+                    email=email,
+                    business_name=business_name,
+                    full_address=full_address,
+                    street=street,
+                    cid=cid,
+                    image=image,
+                    municipality=municipality,
+                    plus_code=plus_code,
+                    social_media_links=social_media_links,
+                    opening_hours=opening_hours,
+                    google_map_url=google_map_url,
+                    latitude=latitude,
+                    longitude=longitude,
+                    reviews_url=reviews_url,
+                    average_rating=average_rating,
+                    review_count=review_count,
+                    website=website,
+                    categories=categories,
+                    phones=phones,
+                )
             print("History Created")
         except Exception as a:
             print(a)

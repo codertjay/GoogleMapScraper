@@ -12,13 +12,20 @@ class SearchInfo(models.Model):
     total_places = models.IntegerField(default=0)
     scraped_places = models.IntegerField(default=0)
     timestamp = models.DateTimeField(auto_now_add=True)
+
     @property
     def progress(self):
         if self.total_places == 0:
             self.total_places = 1
+        if self.scraped_places > self.total_places:
+            self.scraped_places = self.total_places
+            self.completed = True
+            self.save()
         progress = (self.scraped_places / self.total_places) * 100
         return progress
-
+    @property
+    def scraped_emails(self):
+        return self.history_set.filter(email__contains="@").count()
 
 class History(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)

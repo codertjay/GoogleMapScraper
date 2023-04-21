@@ -67,6 +67,7 @@ function initMap() {
                         CreateCardImage(suggestion.description)
                     });
                     country_container.appendChild(item);
+
                 });
 
             }
@@ -169,7 +170,7 @@ function addCountryItem() {
         return;
     }
     console.log(value)
-    countries.push(value);
+    countries.push(value.replace(/,/g, ' '));
     countryItem.value = "";
 
     renderCountryItems();
