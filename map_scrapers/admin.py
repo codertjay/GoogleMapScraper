@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from map_scrapers.models import History
+from map_scrapers.models import History,SearchInfo
 
 
 class HistoryAdmin(admin.ModelAdmin):
@@ -11,3 +11,4 @@ class HistoryAdmin(admin.ModelAdmin):
 
 
 admin.site.register(History,HistoryAdmin)
+admin.site.register(SearchInfo)
