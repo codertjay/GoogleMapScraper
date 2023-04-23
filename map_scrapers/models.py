@@ -7,6 +7,7 @@ from django.db import models
 class SearchInfo(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     keyword = models.CharField(max_length=500, blank=True, null=True)
+    location = models.CharField(max_length=500, blank=True, null=True)
     platform = models.CharField(max_length=500, blank=True, null=True)
     completed = models.BooleanField(default=False)
     total_places = models.IntegerField(default=0)

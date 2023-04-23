@@ -101,6 +101,10 @@ function initMap() {
         }
     })
 
+    categoryItem.addEventListener('keydown', () => {
+        category_container.innerHTML = '';
+    })
+
     /* ENd listener*/
 
     function CreateCardImage(search_query) {

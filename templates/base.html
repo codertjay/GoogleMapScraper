@@ -110,9 +110,9 @@
                 <ul class="sidebar_nav">
 
                     <li class="">
-                        <a href="{% url "map" %}">
-                            <span class="nav-icon uil  uil-map-marker"></span>
-                            <span class="menu-text">Search</span>
+                        <a href="{% url "search_dashboard" %}">
+                            <span class="nav-icon uil uil-dashboard"></span>
+                            <span class="menu-text">Dashboard</span>
                         </a>
                     </li>
 
@@ -120,10 +120,15 @@
                     <li class="">
                         <a href="{% url "search_info" %}">
                             <span class="nav-icon uil uil-history-alt"></span>
-                            <span class="menu-text"> SearchInfo</span>
+                            <span class="menu-text"> Search History</span>
                         </a>
                     </li>
-
+                    <li class="">
+                        <a href="{% url "map" %}">
+                            <span class="nav-icon uil  uil-map-marker"></span>
+                            <span class="menu-text">Google Maps</span>
+                        </a>
+                    </li>
 
                     {% if not request.user.is_authenticated %}
                         <li class="">

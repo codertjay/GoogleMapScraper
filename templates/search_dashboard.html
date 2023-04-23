@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+{% block css %}
+    <style>
+        .search_line {
+            border-left: 2px solid #363836;
+            height: 100px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="breadcrumb-main">
+                <h4 class="text-capitalize breadcrumb-title">Search Dashboard</h4>
+                <div class="breadcrumb-action justify-content-center flex-wrap">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url "map" %}"><i class="uil uil-estate"></i>Map</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="row align-items-center justify-content-between a d-flex">
+            <div class="col-12 col-md-4 pt-2  pt-md-0">
+                <div class="d-flex justify-content-evenly align-items-center">
+                    <div class="">
+                        <button type="button" class="btn text-center"
+                                style="background-color: #8231D3; height: 35px; width: 30px; font-size: 10px; border-radius: 50%">
+                            <i class="uil uil-search text-white" style="font-size: 10px;"></i>
+                        </button>
+                    </div>
+                    <div class=" ">
+                        <h3 style="border-bottom: 2px solid #8231D3; padding-bottom: 5px;font-weight: lighter; display: inline-block; width: 150px;">
+                            Total Searches</h3>
+
+
+                    </div>
+                    <div class="">
+                        <h2>{{ total_searches }}</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-8 col-md-3   d-none  d-md-flex justify-content-between " style="padding: 0">
+                <div class="search_line "></div>
+                <div class="search_line "></div>
+            </div>
+            <div class="col-12 col-md-4 py-3 pt-md-0">
+                <div class="d-flex justify-content-evenly align-items-center">
+                    <div class="">
+                        <button type="button" class="btn text-center"
+                                style="background-color: #8231D3; height: 35px; width: 30px; font-size: 10px; border-radius: 50%">
+                            <i class="uil uil-search text-white" style="font-size: 10px;"></i>
+                        </button>
+
+                    </div>
+                    <div class=" ">
+
+                        <h3 style="border-bottom: 2px solid #8231D3; padding-bottom: 5px;font-weight: lighter; display: inline-block; width: 150px;">
+                            Searches
+                            Left</h3>
+
+                    </div>
+                    <div class="float-end">
+                        <h2>18</h2>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row mt-5">
+
+        <div class="col-12 mb-30">
+            <div class="support-ticket-system support-ticket-system--search">
+                <h3 style="font-weight: lighter;margin-top: 10px;margin-bottom: 15px">Recent Searches</h3>
+
+
+                <div class="userDatatable userDatatable--ticket userDatatable--ticket--2 mt-1">
+                    <div class="table-responsive">
+                        <table class="table mb-0 table-borderless">
+                            <thead>
+
+                            <tr class="userDatatable-header">
+
+                                <th>
+                                    <span class="projectDatatable-title">Date</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">Category</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">Location</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">Email</span>
+                                </th>
+
+
+                                <th>
+                                    <span class="projectDatatable-title">Platform</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">Status</span>
+                                </th>
+                                <th>
+                                    <span class="projectDatatable-title">Action</span>
+                                </th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for item in search_infos %}
+                                <tr>
+
+                                    <td>
+                                        <div class="userDatatable-content--subject" style="
+                                         max-width: 1000px; overflow-wrap: normal;">
+                                            {{ item.timestamp }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            <a href="{% url "history_list" item.id %}">
+                                                {{ item.keyword }}
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.location }}
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.scraped_emails }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {{ item.platform }}
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            {% if item.completed %}
+                                                Completed
+                                            {% else %}
+                                                In Progress
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            <div class="d-flex">
+                                                <a class="btn btn-white  btn-sm text-purple"
+                                                   href="{% url 'search_info_download' item.id %}">Download</a>
+                                                <a class="btn btn-sm" href="{% url 'history_list' item.id %}">view</a>
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                </tr>
+
+
+                            {% endfor %}
+
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+{% endblock %}

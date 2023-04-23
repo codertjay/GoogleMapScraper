@@ -1,10 +1,9 @@
 # Create your views here.
 import base64
 import csv
-import json
+
 import requests
 from decouple import config
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -15,18 +14,35 @@ from django.views.generic import ListView
 
 from map_scrapers.forms import HistoryUpdateForm
 from map_scrapers.models import History, SearchInfo
-from map_scrapers.permissions import StaffAndLoginRequiredMixin
-from map_scrapers.utils import export_user_csv, query_items, export_all_csv, read_search_csv, \
-    export_search_info_user_csv
 from map_scrapers.tasks import get_all_place, proxies, api_key
+from map_scrapers.utils import export_user_csv, query_items, export_all_csv, export_search_info_user_csv
+
+
+class SearchDashboardView(LoginRequiredMixin, View):
+    """
+    this is used to get the search dashboard
+    """
+
+    def get(self, request):
+        context = {
+            "total_searches": SearchInfo.objects.filter(user=self.request.user).count(),
+            "search_infos": SearchInfo.objects.filter(user=self.request.user)[:10]
+        }
+
+        return render(request, "search_dashboard.html", context)
 
 
 def search_api(request):
     print("access here")
     query = request.GET.get('query')
     category = request.GET.get('category')
-
-    get_all_place.delay(query, category, request.user.id)
+    search_info = SearchInfo.objects.create(
+        user=request.user,
+        platform="Google Map",
+        keyword=category,
+        location=query.replace("[", "").replace('"', "").replace("]", "")
+    )
+    get_all_place.delay(query, category, request.user.id, search_info.id)
     # Get the single place
     return JsonResponse({"status": "ok"})
 

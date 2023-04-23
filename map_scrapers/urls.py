@@ -12,6 +12,7 @@ urlpatterns = [
     path('<int:id>/history/', views.HistoryListView.as_view(), name='history_list'),
     path('admin_history/', views.AdminHistoryListView.as_view(), name='admin_history'),
     path('history_update/', views.HistoryUpdateView.as_view(), name='history_update'),
+    path('search_dashboard/', views.SearchDashboardView.as_view(), name='search_dashboard'),
     path('history_delete/', views.HistoryDeleteView.as_view(), name='history_delete'),
     path('<int:id>/search_info_download/', ExportSearchInfoCSV.as_view(), name='search_info_download'),
     path('history_download/', DownloadUserCSVView.as_view(), name='csv_download'),

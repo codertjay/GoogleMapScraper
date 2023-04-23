@@ -91,15 +91,13 @@ get_social_media_links("https://leola.ng/?y_source=1_MTUzNjA3OTQtNzE1LWxvY2F0aW9
 
 
 @shared_task
-def get_all_place(query, category, user_id):
+def get_all_place(query, category, user_id, search_info_id):
     """
    This get all the places
     """
-    search_info = SearchInfo.objects.create(
-        user_id=user_id,
-        platform="Google Map",
-        keyword=query.replace("[", "").replace('"', "").replace("]", "")
-    )
+    search_info = SearchInfo.objects.filter(id=search_info_id).first()
+    if not search_info:
+        return True
     # split with the string
     query = query.strip("[]").split(",")
 

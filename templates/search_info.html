@@ -35,6 +35,9 @@
                                     <span class="projectDatatable-title">Keyword</span>
                                 </th>
                                 <th>
+                                    <span class="projectDatatable-title">Location</span>
+                                </th>
+                                <th>
                                     <span class="projectDatatable-title">Progress</span>
                                 </th>
                                 <th>
@@ -63,7 +66,14 @@
                                     <td>
                                         <div class="userDatatable-content--subject">
                                             <a href="{% url "history_list" item.id %}">
-                                                {{ item.keyword|truncatechars:30 }}
+                                                {{ item.keyword }}
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="userDatatable-content--subject">
+                                            <a href="{% url "history_list" item.id %}">
+                                                {{ item.location|truncatechars:30 }}
                                             </a>
                                         </div>
                                     </td>
