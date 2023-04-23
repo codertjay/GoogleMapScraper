@@ -1,190 +1,318 @@
 {% extends "base.html" %}
-{% block css %}
-    <style>
-        .search_line {
-            border-left: 2px solid #363836;
-            height: 100px;
-        }
-    </style>
-{% endblock %}
+{% load static %}
+{% load item_tags %}
+
 
 {% block content %}
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="breadcrumb-main">
-                <h4 class="text-capitalize breadcrumb-title">Search Dashboard</h4>
-                <div class="breadcrumb-action justify-content-center flex-wrap">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{% url "map" %}"><i class="uil uil-estate"></i>Map</a>
-                            </li>
-                            <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="card">
-        <div class="row align-items-center justify-content-between a d-flex">
-            <div class="col-12 col-md-4 pt-2  pt-md-0">
-                <div class="d-flex justify-content-evenly align-items-center">
-                    <div class="">
-                        <button type="button" class="btn text-center"
-                                style="background-color: #8231D3; height: 35px; width: 30px; font-size: 10px; border-radius: 50%">
-                            <i class="uil uil-search text-white" style="font-size: 10px;"></i>
-                        </button>
-                    </div>
-                    <div class=" ">
-                        <h3 style="border-bottom: 2px solid #8231D3; padding-bottom: 5px;font-weight: lighter; display: inline-block; width: 150px;">
-                            Total Searches</h3>
-
-
-                    </div>
-                    <div class="">
-                        <h2>{{ total_searches }}</h2>
+    <div class="demo4 crm">
+        <div class="container-fluid">
+            <div class="row ">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-main">
+                        <h4 class="text-capitalize breadcrumb-title">Dashboard</h4>
+                        <div class="breadcrumb-action justify-content-center flex-wrap">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="{% url "map" %}"><i class="uil uil-map"></i>Map</a>
+                                    </li>
+                                    <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                                </ol>
+                            </nav>
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div class="col-xxl-4 col-lg-6 mb-25">
+                    <div class="card banner-feature banner-feature--danial mb-0 h-100">
+                        <div class="banner-feature__shape">
+                            <img src="{% static 'img/glass-trophy.png' %}" alt="img">
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <div class="card-body">
+                                <h1 class="banner-feature__heading color-white">
+                                    Congratulations {{ request.user.username|capfirst }}!</h1>
 
-            <div class="col-8 col-md-3   d-none  d-md-flex justify-content-between " style="padding: 0">
-                <div class="search_line "></div>
-                <div class="search_line "></div>
-            </div>
-            <div class="col-12 col-md-4 py-3 pt-md-0">
-                <div class="d-flex justify-content-evenly align-items-center">
-                    <div class="">
-                        <button type="button" class="btn text-center"
-                                style="background-color: #8231D3; height: 35px; width: 30px; font-size: 10px; border-radius: 50%">
-                            <i class="uil uil-search text-white" style="font-size: 10px;"></i>
-                        </button>
-
-                    </div>
-                    <div class=" ">
-
-                        <h3 style="border-bottom: 2px solid #8231D3; padding-bottom: 5px;font-weight: lighter; display: inline-block; width: 150px;">
-                            Searches
-                            Left</h3>
-
-                    </div>
-                    <div class="float-end">
-                        <h2>18</h2>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div class="col-xxl-4 col-lg-6 mb-25">
+                    <div class="card performance-o border-0">
+                        <div class="card-header border-0 pb-0">
+                            <h6>Performance Overview </h6>
+                        </div>
 
-        </div>
-    </div>
-    <div class="row mt-5">
+                        <div class="card-body pt-sm-25 pb-25">
+                            <div class="performance-chart">
+                                <div class="">
+                                    <div class="performanceDetails" style="min-height: 281px;">
+                                        <div id="radial-chart"></div>
 
-        <div class="col-12 mb-30">
-            <div class="support-ticket-system support-ticket-system--search">
-                <h3 style="font-weight: lighter;margin-top: 10px;margin-bottom: 15px">Recent Searches</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="performance-chart-labels">
+                                <ul>
+                                    <li class="label-target">Facebook</li>
+                                    <li class="label-target">Linkedin</li>
+                                    <li class="label-target">Instagram</li>
+                                    <li class="label-target">Other</li>
+                                    {% comment %} <li class="label-completed">Completed</li>
+                                    <li class="label-in-progress">In Progress</li>{% endcomment %}
+                                </ul>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xxl-4 mb-25">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="overview-content products-awards pt-20 pb-20 text-center radius-xl">
+                                <div class="d-inline-flex flex-column align-items-center justify-content-center">
+                                    <div class="revenue-chart-box__Icon order-bg-opacity-primary color-primary me-0">
+                                        <i class="uil uil-briefcase-alt"></i>
+                                    </div>
+                                    <div class="d-flex align-items-start flex-wrap">
+                                        <div>
+                                            <p class="mb-1 mb-0 color-gray">Total Searches </p>
+                                            <h1>{{ total_searches }}</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="overview-content products-awards pt-20 pb-20 text-center radius-xl">
+                                <div class="d-inline-flex flex-column align-items-center justify-content-center">
+                                    <div class="revenue-chart-box__Icon order-bg-opacity-info color-info me-0">
+                                        <i class="uil uil-award"></i>
+                                    </div>
+                                    <div class="d-flex align-items-start flex-wrap">
+                                        <div>
+                                            <p class="mb-1 mb-0 color-gray">Total Emails</p>
+                                            <h1>{{ total_emails }}</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-25">
+                            <div class="card banner-feature banner-feature--7 position-relative border-0 mb-0">
+                                <div class="d-flex justify-content-center">
+                                    <div class="card-body py-25 px-30">
+                                        <div class="div">
+                                            <h4 class="banner-feature__heading">Subscribe to our newsletter</h4>
+                                            <p class="banner-feature__para ">We notify you once any post is
+                                                published</p>
+                                            <button type="button" class="btn btn-primary mt-15 btn-md">Subscribe
+                                            </button>
+                                        </div>
+                                        <div class="banner-feature__shape position-absolute">
+                                            <img src="{% static 'img/3d-message.png' %}" alt="img">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-12 mb-25">
+                    <div class="card border-0 px-25 h-100">
+                        <div class="card-header px-0 border-0">
+                            <h6>Recent Search History </h6>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="selling-table-wrap selling-table-wrap--source">
+                                <div class="table-responsive">
+                                    <table class="table mb-0 table-borderless">
+                                        <thead>
+
+                                        <tr class="userDatatable-header">
+
+                                            <th>
+                                                <span class="projectDatatable-title">Date</span>
+                                            </th>
+                                            <th>
+                                                <span class="projectDatatable-title">Category</span>
+                                            </th>
+                                            <th>
+                                                <span class="projectDatatable-title">Location</span>
+                                            </th>
+                                            <th>
+                                                <span class="projectDatatable-title">Email</span>
+                                            </th>
 
 
-                <div class="userDatatable userDatatable--ticket userDatatable--ticket--2 mt-1">
-                    <div class="table-responsive">
-                        <table class="table mb-0 table-borderless">
-                            <thead>
+                                            <th>
+                                                <span class="projectDatatable-title">Platform</span>
+                                            </th>
+                                            <th>
+                                                <span class="projectDatatable-title">Status</span>
+                                            </th>
+                                            <th>
+                                                <span class="projectDatatable-title">Action</span>
+                                            </th>
 
-                            <tr class="userDatatable-header">
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for item in search_infos %}
+                                            <tr>
 
-                                <th>
-                                    <span class="projectDatatable-title">Date</span>
-                                </th>
-                                <th>
-                                    <span class="projectDatatable-title">Category</span>
-                                </th>
-                                <th>
-                                    <span class="projectDatatable-title">Location</span>
-                                </th>
-                                <th>
-                                    <span class="projectDatatable-title">Email</span>
-                                </th>
-
-
-                                <th>
-                                    <span class="projectDatatable-title">Platform</span>
-                                </th>
-                                <th>
-                                    <span class="projectDatatable-title">Status</span>
-                                </th>
-                                <th>
-                                    <span class="projectDatatable-title">Action</span>
-                                </th>
-
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for item in search_infos %}
-                                <tr>
-
-                                    <td>
-                                        <div class="userDatatable-content--subject" style="
+                                                <td>
+                                                    <div class="userDatatable-content--subject" style="
                                          max-width: 1000px; overflow-wrap: normal;">
-                                            {{ item.timestamp }}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="userDatatable-content--subject">
-                                            <a href="{% url "history_list" item.id %}">
-                                                {{ item.keyword }}
-                                            </a>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="userDatatable-content--subject">
-                                            {{ item.location }}
-                                        </div>
-                                    </td>
+                                                        {{ item.timestamp }}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="userDatatable-content--subject"
+                                                         style="max-width: 200px; overflow: auto;white-space: normal">
+                                                        <a href="{% url "history_list" item.id %}">
+                                                            {{ item.keyword }}
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="userDatatable-content--subject"
+                                                         style="max-width: 200px; overflow: auto;white-space: normal">
+                                                        {{ item.location }}
+                                                    </div>
+                                                </td>
 
-                                    <td>
-                                        <div class="userDatatable-content--subject">
-                                            {{ item.scraped_emails }}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="userDatatable-content--subject">
-                                            {{ item.platform }}
-                                        </div>
-                                    </td>
+                                                <td>
+                                                    <div class="userDatatable-content--subject">
+                                                        {{ item.scraped_emails }}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="userDatatable-content--subject">
+                                                        {{ item.platform }}
+                                                    </div>
+                                                </td>
 
-                                    <td>
-                                        <div class="userDatatable-content--subject">
-                                            {% if item.completed %}
-                                                Completed
-                                            {% else %}
-                                                In Progress
-                                            {% endif %}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="userDatatable-content--subject">
-                                            <div class="d-flex">
-                                                <a class="btn btn-white  btn-sm text-purple"
-                                                   href="{% url 'search_info_download' item.id %}">Download</a>
-                                                <a class="btn btn-sm" href="{% url 'history_list' item.id %}">view</a>
-                                            </div>
+                                                <td>
+                                                    <div class="userDatatable-content--subject">
+                                                        {% if item.completed %}
+                                                            Completed
+                                                        {% else %}
+                                                            In Progress
+                                                        {% endif %}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="userDatatable-content--subject">
+                                                        <div class="d-flex">
+                                                            <a class="btn btn-white  btn-sm text-purple"
+                                                               href="{% url 'search_info_download' item.id %}">Download</a>
+                                                            <a class="btn btn-sm"
+                                                               href="{% url 'history_list' item.id %}">view</a>
+                                                        </div>
 
-                                        </div>
-                                    </td>
+                                                    </div>
+                                                </td>
 
-                                </tr>
-
-
-                            {% endfor %}
+                                            </tr>
 
 
-                            </tbody>
-                        </table>
+                                        {% endfor %}
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
                 </div>
+
             </div>
+
         </div>
-
-
     </div>
 
+{% endblock %}
 
+
+{% block script %}
+    <!-- Include the ApexCharts library -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.27.3/dist/apexcharts.min.js"></script>
+    <script>
+        function newRadialChart(element, seriesData, width, height = "270") {
+            var chartOptions = {
+                series: seriesData,
+                colors: ["#8231D3", "#00AAFF", "#FA8B0C", "#0c7bfa"],
+                chart: {
+                    width: width,
+                    height: height,
+                    type: "radialBar",
+                    sparkline: {
+                        enabled: true
+                    }
+                },
+                legend: {
+                    show: false
+                },
+                plotOptions: {
+                    radialBar: {
+                        hollow: {
+                            margin: 0,
+                            size: "28%"
+                        },
+                        track: {
+                            show: true,
+                            margin: 11
+                        },
+                        dataLabels: {
+                            show: true,
+                            name: {
+                                offsetY: 20
+                            },
+                            value: {
+                                fontSize: "24px",
+                                fontFamily: '"Jost", sans-serif',
+                                fontWeight: 600,
+                                offsetY: -21
+                            },
+                            total: {
+                                show: true,
+                                label: "Twitter",
+                                fontSize: "16px",
+                                fontFamily: '"Jost", sans-serif',
+                                fontWeight: 400,
+                                color: "#404040",
+                                formatter: function (e) {
+                                    return "{{all_twitter_count}}%"
+                                }
+                            }
+                        },
+                        minAngle: 360
+                    }
+                },
+                stroke: {
+                    lineCap: "round"
+                },
+                grid: {
+                    padding: {
+                        to: 0,
+                        right: 0,
+                        bottom: 0,
+                        left: 0
+                    }
+                },
+                labels: ["Twitter", "Linkedin", "Youtube", "Instagram", "Facebook"]
+            };
+
+            var chartElement = document.querySelector(element);
+            if (chartElement) {
+                var chart = new ApexCharts(chartElement, chartOptions);
+                chart.render();
+            }
+        }
+
+        // Call the newRadialChart function with the container ID, data series, and chart width
+        newRadialChart(".performanceDetails", [{{all_twitter_count}}, {{all_linkedin_count}}, {{all_youtube_count}}, {{ all_instagram_count }}, {{all_facebook_count}}], "100%", 280);
+
+    </script>
 {% endblock %}

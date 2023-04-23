@@ -215,12 +215,12 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="userDatatable-content--subject">
+                                        <div class="userDatatable-content--subject" style=" white-space: nowrap;">
                                             {{ item.phone_number }}
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="userDatatable-content--subject">
+                                        <div class="userDatatable-content--subject" style=" white-space: nowrap;">
                                             {{ item.phones }}
                                         </div>
                                     </td>
@@ -242,7 +242,8 @@
                                     </td>
                                     <td>
                                         <a href="{{ item.reviews_url }}" target="_blank">
-                                            <div class="userDatatable-content--subject">
+                                            <div class="userDatatable-content--subject"
+                                                 style="max-width: 200px; overflow: auto;white-space: normal">
                                                 {{ item.reviews_url }}
                                             </div>
                                         </a>
@@ -258,7 +259,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="userDatatable-content--subject" >
+                                        <div class="userDatatable-content--subject">
                                             {{ item.opening_hours|truncatechars:30 }}
                                         </div>
                                     </td>
@@ -285,7 +286,7 @@
                                         <div class="userDatatable-content--priority">
                                             <a href="{{ item.website }}"
                                                style="">
-                                                {{ item.website |truncatechars:30}}
+                                                {{ item.website |truncatechars:30 }}
                                             </a>
                                         </div>
                                     </td>

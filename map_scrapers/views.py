@@ -15,7 +15,8 @@ from django.views.generic import ListView
 from map_scrapers.forms import HistoryUpdateForm
 from map_scrapers.models import History, SearchInfo
 from map_scrapers.tasks import get_all_place, proxies, api_key
-from map_scrapers.utils import export_user_csv, query_items, export_all_csv, export_search_info_user_csv
+from map_scrapers.utils import export_user_csv, query_items, export_all_csv, export_search_info_user_csv, \
+    get_social_percent
 
 
 class SearchDashboardView(LoginRequiredMixin, View):
@@ -26,7 +27,16 @@ class SearchDashboardView(LoginRequiredMixin, View):
     def get(self, request):
         context = {
             "total_searches": SearchInfo.objects.filter(user=self.request.user).count(),
-            "search_infos": SearchInfo.objects.filter(user=self.request.user)[:10]
+            "search_infos": SearchInfo.objects.filter(user=self.request.user)[:5],
+            "total_emails": History.objects.filter(user=self.request.user, email__contains="@").count(),
+            "all_twitter_count": get_social_percent(user=self.request.user, social="www.twitter.com"),
+            "all_linkedin_count": get_social_percent(self.request.user,
+                                                     "www.LinkedIn.com"),
+            "all_youtube_count": get_social_percent(self.request.user,
+                                                    "www.Youtube.com"),
+            "all_instagram_count": get_social_percent(self.request.user,
+                                                      "www.Instagram.com"),
+
         }
 
         return render(request, "search_dashboard.html", context)

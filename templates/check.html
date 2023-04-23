@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Bootstrap Radial Chart Example</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+          <div id="radial-chart"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Include the ApexCharts library -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.27.3/dist/apexcharts.min.js"></script>
+    <script>
+      // Call the radialChart function with the container ID, data series, and chart width
+      radialChart("#radial-chart", [100, 100, 20], "100%");
+    </script>
+  </body>
+</html>

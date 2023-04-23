@@ -9,6 +9,16 @@ from map_scrapers.models import History, SearchInfo
 from .tasks import create_item_task
 
 
+def get_social_percent(user, social):
+    social_count = History.objects.filter(user=user,
+                                          social_media_links__icontains=social).count()
+    total_count = History.objects.all().count()
+    if social_count == 0:
+        social_count = 1
+    progress = (social_count / total_count) * 100
+    return round(progress, 1)
+
+
 def export_search_info_user_csv(search_info_id):
     """
     this returns the full info of all the product in csv format
@@ -20,6 +30,7 @@ def export_search_info_user_csv(search_info_id):
 
     # Get a list of all fields of the model
     fields = [f.name for f in History._meta.fields]
+    fields = [f.name for f in History._meta.fields if f.name not in ['user', 'search_info']]
 
     # Write the header row
     writer.writerow(fields)
@@ -43,7 +54,7 @@ def export_user_csv(user):
     writer = csv.writer(response)
 
     # Get a list of all fields of the model
-    fields = [f.name for f in History._meta.fields]
+    fields = [f.name for f in History._meta.fields if f.name not in ['user', 'search_info']]
 
     # Write the header row
     writer.writerow(fields)

@@ -22,6 +22,26 @@
     <div class="row">
         <div class="col-12 mb-30">
             <div class="support-ticket-system support-ticket-system--search">
+                <div class="breadcrumb-main m-0 breadcrumb-main--table ">
+
+
+                    <div class="action-btn mb-3 float-end">
+                        <div class="dropdown dropdown-click">
+                            <div class="btn-group dropleft">
+                                <button class="btn btn-outline-lighten btn-sm">Export</button>
+                                <button type="button" class="btn btn-outline-lighten btn-sm dropdown-toggle-split"
+                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="uil uil-angle-down"></i>
+                                </button>
+                                <div class="dropdown-default dropdown-menu" style="">
+                                    <a class="dropdown-item" href="{% url 'csv_download' %}">Export All</a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
 
 
                 <div class="userDatatable userDatatable--ticket userDatatable--ticket--2 mt-1">
@@ -64,16 +84,18 @@
 
 
                                     <td>
-                                        <div class="userDatatable-content--subject">
+                                        <div class="userDatatable-content--subject"
+                                             style="max-width: 200px; overflow: auto;white-space: normal">
                                             <a href="{% url "history_list" item.id %}">
                                                 {{ item.keyword }}
                                             </a>
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="userDatatable-content--subject">
+                                        <div class="userDatatable-content--subject"
+                                             style="max-width: 200px; overflow: auto;white-space: normal">
                                             <a href="{% url "history_list" item.id %}">
-                                                {{ item.location|truncatechars:30 }}
+                                                {{ item.location|truncatechars:30|linebreaks }}
                                             </a>
                                         </div>
                                     </td>
