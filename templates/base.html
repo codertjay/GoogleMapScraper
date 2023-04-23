@@ -116,19 +116,19 @@
                         </a>
                     </li>
 
-
-                    <li class="">
-                        <a href="{% url "search_info" %}">
-                            <span class="nav-icon uil uil-history-alt"></span>
-                            <span class="menu-text"> Search History</span>
-                        </a>
-                    </li>
                     <li class="">
                         <a href="{% url "map" %}">
                             <span class="nav-icon uil  uil-map-marker"></span>
                             <span class="menu-text">Google Maps</span>
                         </a>
                     </li>
+                    <li class="">
+                        <a href="{% url "search_info" %}">
+                            <span class="nav-icon uil uil-history-alt"></span>
+                            <span class="menu-text"> Search History</span>
+                        </a>
+                    </li>
+
 
                     {% if not request.user.is_authenticated %}
                         <li class="">
