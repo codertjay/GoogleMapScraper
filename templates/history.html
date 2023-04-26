@@ -28,8 +28,26 @@
                     <form action="." class="support-form datatable-support-form d-flex justify-content-xxl-between
                     justify-content-between align-items-center flex-wrap">
                         <div class="support-form__input-status m-3">
-                            <div class="dm-select " style="min-width: 250px;">
-                                <select name="username"
+                            <div class=" " style="min-width: 250px;">
+                                <h3> {{ search_info.keyword |capfirst }}</h3>
+                                <div class="progress">
+                                    <div class="progress-bar
+                                        {% if search_info.progress < 25 %}
+                                          bg-danger
+                                        {% elif search_info.progress < 50 %}
+                                          bg-warning
+                                        {% elif search_info.progress < 75 %}
+                                          bg-info
+                                        {% else %}
+                                          bg-success
+                                        {% endif %}
+                                      " role="progressbar" style="width: {{ search_info.progress }}%"
+                                         aria-valuenow="{{ search_info.progress }}" aria-valuemin="0"
+                                         aria-valuemax="100"></div>
+                                </div>
+
+
+                                {% comment %} <select name="username"
                                         class="select-search form-control select2-hidden-accessible" data-select2-id="5"
                                         tabindex="-1" aria-hidden="true">
                                     {% if request.GET.username %}
@@ -44,7 +62,7 @@
                                             >{{ user.username }}</option>
                                         {% endif %}
                                     {% endfor %}
-                                </select>
+                                </select>{% endcomment %}
                             </div>
                         </div>
                         <div class="d-flex m-3">

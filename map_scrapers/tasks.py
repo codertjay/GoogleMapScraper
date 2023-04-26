@@ -1,7 +1,8 @@
 import csv
 import re
-import urllib.parse
+import time
 from urllib.parse import urlencode
+
 import requests
 from celery import shared_task
 from decouple import config
@@ -87,9 +88,6 @@ def get_social_media_links(url):
     return social_media_links
 
 
-get_social_media_links("https://leola.ng/?y_source=1_MTUzNjA3OTQtNzE1LWxvY2F0aW9uLmdvb2dsZV93ZWJzaXRlX292ZXJyaWRl")
-
-
 @shared_task
 def get_all_place(query, category, user_id, search_info_id):
     """
@@ -105,14 +103,34 @@ def get_all_place(query, category, user_id, search_info_id):
     for item in query:
         url = f'https://maps.googleapis.com/maps/api/place/textsearch/json?query={category}+in+{item}&key={api_key}'
         response = requests.get(url)
+        # Check if there are additional pages of results
+        data = response.json()
+
         if response.status_code == 200:
-            counter = 0
             for item in response.json().get("results"):
-                counter += 1
                 print(item.get("place_id"))
                 get_place_detail_and_save.delay(item.get("place_id"), user_id, search_info.id)
-            search_info.total_places = counter
-            search_info.save()
+                search_info.total_places = search_info.total_places + 1
+                search_info.save()
+            # get the next page
+            while 'next_page_token' in data:
+                # Add the "pagetoken" parameter to the query string
+                page_token = data['next_page_token']
+                next_url = f'{url}&pagetoken={page_token}'
+
+                # Wait for a few seconds before sending the next request
+                # (to avoid hitting the API rate limit)
+                time.sleep(5)
+
+                # Send the next request
+                response = requests.get(next_url)
+                data = response.json()
+                # Process the next page of results
+                for item in data.get("results"):
+                    print(item.get("place_id"))
+                    get_place_detail_and_save.delay(item.get("place_id"), user_id, search_info.id)
+                    search_info.total_places = search_info.total_places + 1
+                    search_info.save()
     return True
 
 
@@ -229,7 +247,7 @@ def get_place_detail_and_save(place_id, user_id, search_info_id):
                 )
             print("History Created")
         except Exception as a:
-            print(a)
+            print("error occured crating history", a)
         return True
 
 

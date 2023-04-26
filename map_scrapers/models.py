@@ -34,7 +34,7 @@ class SearchInfo(models.Model):
             self.completed = True
             self.save()
         progress = (self.scraped_places / self.total_places) * 100
-        return progress
+        return round(progress, 2)
 
     @property
     def scraped_emails(self):

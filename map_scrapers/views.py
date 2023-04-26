@@ -176,6 +176,7 @@ class HistoryListView(LoginRequiredMixin, ListView):
         context['item_form'] = HistoryUpdateForm()
         context["users"] = User.objects.all()
         context["search_info_id"] = self.kwargs['id']
+        context["search_info"] = SearchInfo.objects.filter(id=self.kwargs['id']).first()
         return context
 
 
