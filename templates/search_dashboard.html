@@ -189,10 +189,10 @@
                         <div class="card-body">
                             <div class="global-slider global-sliders slick-slider slick-dots-bottom"
                                  data-dots-slick='true'
-                                 data-autoplay-slick='true' autoplay data-autoplay-speed="3000">
+                                 data-autoplay-slick='true' autoplay data-autoplay-speed="5000">
                                 <div class="slick-slider__single slick-slider__singles d-flex"
                                      style="
-                                     background-image: url('https://free4kwallpapers.com/uploads/originals/2015/07/26/nice-place-hd-wallpaper.jpg');
+                                     background-image: url('{% static "img/dimension_1.png" %}');
                                      background-size: cover;
                                       background-repeat: no-repeat;
                                       background-position: center center;">
@@ -203,7 +203,7 @@
                                      background-size: cover;
                                       background-repeat: no-repeat;
                                       background-position: center center;
-                                     background-image: url('https://santorinidave.com/wp-content/uploads/2022/01/florida-best-beach-places-to-go.jpeg')">
+                                     background-image: url('{% static "img/dimension_2.png" %}')">
 
                                 </div>
                                 <div class="slick-slider__single  slick-slider__singles d-flex"
@@ -211,7 +211,7 @@
                                      background-size: cover;
                                       background-repeat: no-repeat;
                                       background-position: center center;
-                                     background-image: url('https://i.pinimg.com/originals/b0/03/cc/b003cc70e9d18a65bde884b895f802a2.jpg')">
+                                     background-image: url('{% static "img/dimension_3.png" %}')">
 
                                 </div>
                             </div>
@@ -314,7 +314,7 @@
         var slides = slider.querySelectorAll('.slick-slider__singles');
         var dots = slider.querySelectorAll('.slick-dots button');
         var currentSlide = 0;
-        var slideInterval = setInterval(nextSlide, 3000);
+        var slideInterval = setInterval(nextSlide, 5000);
 
         function nextSlide() {
             dots = slider.querySelectorAll('.slick-dots button');
@@ -343,7 +343,7 @@
                     dots[currentSlide].parentElement.classList.add("slick-active")
                 }
                 clearInterval(slideInterval);
-                slideInterval = setInterval(nextSlide, 3000);
+                slideInterval = setInterval(nextSlide, 5000);
             });
         }
 
@@ -353,7 +353,7 @@
             });
 
             slider.addEventListener('mouseout', function () {
-                slideInterval = setInterval(nextSlide, 3000);
+                slideInterval = setInterval(nextSlide, 5000);
             });
         }
 

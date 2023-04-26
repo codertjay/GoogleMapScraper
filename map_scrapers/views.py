@@ -54,7 +54,7 @@ def search_api(request):
     )
     get_all_place.delay(query, category, request.user.id, search_info.id)
     # Get the single place
-    return JsonResponse({"status": "ok"})
+    return JsonResponse({"status": "ok", "id": search_info.id})
 
 
 def place_detail(request):

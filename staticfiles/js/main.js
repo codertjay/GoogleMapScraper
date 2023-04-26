@@ -220,7 +220,8 @@ function searchAllPlaces() {
     xhr.onreadystatechange = function () {
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
             var response = JSON.parse(xhr.responseText);
-            alert("Collecting History data.")
+            window.location.href = "/" + response.id + "/history/"
+
         }
     };
     if (countries.length < 1) {
