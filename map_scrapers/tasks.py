@@ -27,8 +27,10 @@ def get_email_from_website(url):
 
         emails = re.findall(r'\b(?!.*@sentry\.com)[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', response.text)
 
-        # Print the email string
-        return emails[0]
+        for email in emails:
+            if  "sentry" not in email:
+                return email
+        return None
     except Exception as a:
         print("a", a)
         return None

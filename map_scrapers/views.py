@@ -17,7 +17,7 @@ from map_scrapers.models import History, SearchInfo
 from map_scrapers.tasks import get_all_place, proxies, api_key
 from map_scrapers.utils import export_user_csv, query_items, export_all_csv, export_search_info_user_csv, \
     get_social_percent
-
+from django.http import HttpResponseRedirect
 
 class SearchDashboardView(LoginRequiredMixin, View):
     """
@@ -227,14 +227,14 @@ class HistoryUpdateView(LoginRequiredMixin, View):
     def post(self, request):
         item_id = self.request.POST.get("id_history")
         if not item_id:
-            return redirect("history_list")
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         history = History.objects.filter(id=item_id).first()
         if not history:
-            return redirect("history_list")
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         form = HistoryUpdateForm(self.request.POST, instance=history)
         if form.is_valid():
             form.save()
-        return redirect("history_list")
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 class HistoryDeleteView(LoginRequiredMixin, View):
@@ -248,7 +248,7 @@ class HistoryDeleteView(LoginRequiredMixin, View):
             history = History.objects.filter(user=self.request.user, id=item_id).first()
             if history:
                 history.delete()
-        return redirect("history_list")
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 class ExportSearchInfoCSV(LoginRequiredMixin, View):

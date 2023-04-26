@@ -8496,7 +8496,7 @@ body.top-menu .navbar-left .customizer-trigger + .top-menu {
     -ms-flex-align: center;
     align-items: center;
     min-height: 150px;
-    background-color: var(--color-gray-x);
+    background-color: #010413;;
     -webkit-border-radius: 3px;
     border-radius: 3px
 }
