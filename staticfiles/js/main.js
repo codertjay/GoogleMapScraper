@@ -228,8 +228,8 @@ function searchAllPlaces() {
     }
 
     console.log(countries)
-    // xhr.open('GET', '/search' + '?category=' + categoryItem.value + '&query=' + encodeURIComponent(JSON.stringify(countries)));
-    // xhr.send();
+    xhr.open('GET', '/search' + '?category=' + categoryItem.value + '&query=' + encodeURIComponent(JSON.stringify(countries)));
+    xhr.send();
 
 }
 
