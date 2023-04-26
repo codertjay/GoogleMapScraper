@@ -1,8 +1,11 @@
+from datetime import timedelta
+
 from django.contrib.auth.models import User
 from django.db import models
 
-
 # Create your models here.
+from django.utils import timezone
+
 
 class SearchInfo(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
@@ -19,9 +22,14 @@ class SearchInfo(models.Model):
 
     @property
     def progress(self):
+        next_twenty_minutes = self.timestamp + timedelta(minutes=20)
         if self.total_places == 0:
             self.total_places = 1
         if self.scraped_places > self.total_places:
+            self.scraped_places = self.total_places
+            self.completed = True
+            self.save()
+        if timezone.now() > next_twenty_minutes:
             self.scraped_places = self.total_places
             self.completed = True
             self.save()
@@ -31,7 +39,6 @@ class SearchInfo(models.Model):
     @property
     def scraped_emails(self):
         return self.history_set.filter(email__contains="@").count()
-
 
 
 class History(models.Model):

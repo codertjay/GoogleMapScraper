@@ -223,9 +223,13 @@ function searchAllPlaces() {
             alert("Collecting History data.")
         }
     };
+    if (countries.length < 1) {
+        countries.push(countryItem.value.replace(/,/g, ' '));
+    }
 
-    xhr.open('GET', '/search' + '?category=' + categoryItem.value + '&query=' + encodeURIComponent(JSON.stringify(countries)));
-    xhr.send();
+    console.log(countries)
+    // xhr.open('GET', '/search' + '?category=' + categoryItem.value + '&query=' + encodeURIComponent(JSON.stringify(countries)));
+    // xhr.send();
 
 }
 

@@ -29,7 +29,7 @@
                         <div class="d-flex justify-content-center">
                             <div class="card-body">
                                 <h1 class="banner-feature__heading color-white">
-                                    Congratulations {{ request.user.username|capfirst }}!</h1>
+                                    Welcome {{ request.user.username|capfirst }}!</h1>
 
                             </div>
                         </div>
@@ -56,8 +56,7 @@
                                     <li class="label-target">Linkedin</li>
                                     <li class="label-target">Instagram</li>
                                     <li class="label-target">Other</li>
-                                    {% comment %} <li class="label-completed">Completed</li>
-                                    <li class="label-in-progress">In Progress</li>{% endcomment %}
+
                                 </ul>
                             </div>
 
@@ -71,7 +70,7 @@
                             <div class="overview-content products-awards pt-20 pb-20 text-center radius-xl">
                                 <div class="d-inline-flex flex-column align-items-center justify-content-center">
                                     <div class="revenue-chart-box__Icon order-bg-opacity-primary color-primary me-0">
-                                        <i class="uil uil-briefcase-alt"></i>
+                                        <i class="uil uil-envelope-search"></i>
                                     </div>
                                     <div class="d-flex align-items-start flex-wrap">
                                         <div>
@@ -86,7 +85,7 @@
                             <div class="overview-content products-awards pt-20 pb-20 text-center radius-xl">
                                 <div class="d-inline-flex flex-column align-items-center justify-content-center">
                                     <div class="revenue-chart-box__Icon order-bg-opacity-info color-info me-0">
-                                        <i class="uil uil-award"></i>
+                                        <i class="uil uil-envelope-add"></i>
                                     </div>
                                     <div class="d-flex align-items-start flex-wrap">
                                         <div>
@@ -117,7 +116,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-12 mb-25">
+                <div class="col-lg-6 mb-5">
                     <div class="card border-0 px-25 h-100">
                         <div class="card-header px-0 border-0">
                             <h6>Recent Search History </h6>
@@ -134,24 +133,10 @@
                                                 <span class="projectDatatable-title">Date</span>
                                             </th>
                                             <th>
-                                                <span class="projectDatatable-title">Category</span>
+                                                <span class="projectDatatable-title">Keyword</span>
                                             </th>
                                             <th>
                                                 <span class="projectDatatable-title">Location</span>
-                                            </th>
-                                            <th>
-                                                <span class="projectDatatable-title">Email</span>
-                                            </th>
-
-
-                                            <th>
-                                                <span class="projectDatatable-title">Platform</span>
-                                            </th>
-                                            <th>
-                                                <span class="projectDatatable-title">Status</span>
-                                            </th>
-                                            <th>
-                                                <span class="projectDatatable-title">Action</span>
                                             </th>
 
                                         </tr>
@@ -181,37 +166,6 @@
                                                     </div>
                                                 </td>
 
-                                                <td>
-                                                    <div class="userDatatable-content--subject">
-                                                        {{ item.scraped_emails }}
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="userDatatable-content--subject">
-                                                        {{ item.platform }}
-                                                    </div>
-                                                </td>
-
-                                                <td>
-                                                    <div class="userDatatable-content--subject">
-                                                        {% if item.completed %}
-                                                            Completed
-                                                        {% else %}
-                                                            In Progress
-                                                        {% endif %}
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="userDatatable-content--subject">
-                                                        <div class="d-flex">
-                                                            <a class="btn btn-white  btn-sm text-purple"
-                                                               href="{% url 'search_info_download' item.id %}">Download</a>
-                                                            <a class="btn btn-sm"
-                                                               href="{% url 'history_list' item.id %}">view</a>
-                                                        </div>
-
-                                                    </div>
-                                                </td>
 
                                             </tr>
 
@@ -226,7 +180,45 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-6">
 
+                    <div class="card card-default card-md mb-4">
+                        <div class="card-header">
+                            <h6>{% comment %}Scroll automatically{% endcomment %}</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="global-slider global-sliders slick-slider slick-dots-bottom"
+                                 data-dots-slick='true'
+                                 data-autoplay-slick='true' autoplay data-autoplay-speed="3000">
+                                <div class="slick-slider__single slick-slider__singles d-flex"
+                                     style="
+                                     background-image: url('https://free4kwallpapers.com/uploads/originals/2015/07/26/nice-place-hd-wallpaper.jpg');
+                                     background-size: cover;
+                                      background-repeat: no-repeat;
+                                      background-position: center center;">
+
+                                </div>
+                                <div class="slick-slider__single  slick-slider__singles  d-flex active slick-current slick-active"
+                                     style="
+                                     background-size: cover;
+                                      background-repeat: no-repeat;
+                                      background-position: center center;
+                                     background-image: url('https://santorinidave.com/wp-content/uploads/2022/01/florida-best-beach-places-to-go.jpeg')">
+
+                                </div>
+                                <div class="slick-slider__single  slick-slider__singles d-flex"
+                                     style="
+                                     background-size: cover;
+                                      background-repeat: no-repeat;
+                                      background-position: center center;
+                                     background-image: url('https://i.pinimg.com/originals/b0/03/cc/b003cc70e9d18a65bde884b895f802a2.jpg')">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
         </div>
@@ -315,4 +307,57 @@
         newRadialChart(".performanceDetails", [{{all_twitter_count}}, {{all_linkedin_count}}, {{all_youtube_count}}, {{ all_instagram_count }}, {{all_facebook_count}}], "100%", 280);
 
     </script>
+
+    <script>
+
+        var slider = document.querySelector('.global-sliders');
+        var slides = slider.querySelectorAll('.slick-slider__singles');
+        var dots = slider.querySelectorAll('.slick-dots button');
+        var currentSlide = 0;
+        var slideInterval = setInterval(nextSlide, 3000);
+
+        function nextSlide() {
+            dots = slider.querySelectorAll('.slick-dots button');
+            slides[currentSlide].classList.remove('active');
+            if (dots.length > 0) {
+                dots[currentSlide].classList.remove('active');
+            }
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+            if (dots.length > 0) {
+                dots[currentSlide].click(); // Trigger click event on dot
+            }
+        }
+
+        for (var i = 0; i < dots.length; i++) {
+            dots[i].addEventListener('click', function (event) {
+                console.log("Prevent default")
+                event.preventDefault(); // Prevent default anchor behavior
+                slides[currentSlide].classList.remove('slick-current slick-active');
+                if (dots.length > 0) {
+                    dots[currentSlide].classList.remove('slick-current slick-active');
+                }
+                currentSlide = Array.prototype.indexOf.call(dots, this);
+                slides[currentSlide].classList.add('active');
+                if (dots.length > 0) {
+                    dots[currentSlide].parentElement.classList.add("slick-active")
+                }
+                clearInterval(slideInterval);
+                slideInterval = setInterval(nextSlide, 3000);
+            });
+        }
+
+        if (slider.getAttribute('data-autoplay') === 'true') {
+            slider.addEventListener('mouseover', function () {
+                clearInterval(slideInterval);
+            });
+
+            slider.addEventListener('mouseout', function () {
+                slideInterval = setInterval(nextSlide, 3000);
+            });
+        }
+
+
+    </script>
 {% endblock %}
+

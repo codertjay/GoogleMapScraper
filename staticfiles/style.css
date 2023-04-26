@@ -8481,7 +8481,7 @@ body.top-menu .navbar-left .customizer-trigger + .top-menu {
 }
 
 .feature-cards7 .banner-card-image {
-    background-image: url(img/feature-card-image7.png);
+    background-image: url(./img/feature-card-image7.png);
     -webkit-background-size: cover;
     background-size: cover;
     background-position: center center

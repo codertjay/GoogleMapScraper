@@ -23,12 +23,12 @@
     {% endblock %}
 </head>
 
-<body class="layout-light side-menu">
+<body class=" side-menu  layout-dark">
 <div class="mobile-search">
-    <form action="/" class="search-form">
+   {% comment %} <form action="/" class="search-form">
         <img src="img/svg/search.svg" alt="search" class="svg">
         <input class="form-control me-sm-2 box-shadow-none" type="search" placeholder="Search..." aria-label="Search">
-    </form>
+    </form>{% endcomment %}
 </div>
 <div class="mobile-author-actions"></div>
 <header class="header-top">
@@ -48,7 +48,7 @@
 
         <div class="navbar-right">
             <ul class="navbar-right__menu">
-                <li class="nav-search">
+           {% comment %}     <li class="nav-search">
                     <a href="#" class="search-toggle">
                         <i class="uil uil-search"></i>
                         <i class="uil uil-times"></i>
@@ -58,7 +58,7 @@
                         <input class="form-control me-sm-2 box-shadow-none" type="search" placeholder="Search..."
                                aria-label="Search">
                     </form>
-                </li>
+                </li>{% endcomment %}
 
 
                 <li class="nav-author">
@@ -222,6 +222,7 @@
 {% endblock %}
 <script src="{% static "js/plugins.min.js" %}"></script>
 <script src="{% static "js/script.min.js" %}"></script>
+
 
 </body>
 
