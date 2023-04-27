@@ -95,34 +95,32 @@ def get_all_place(query, category, user_id, search_info_id):
    This get all the places
     """
     place_ids = []
-    cardinals = [""]
     search_info = SearchInfo.objects.filter(id=search_info_id).first()
     if not search_info:
         return True
     # split with the string
     query = query.strip("[]").split(",")
 
-    for cardinal in cardinals:
-        for item in query:
-            query_string = f"{category} in {item} , {cardinal}"
-            url = f'https://maps.googleapis.com/maps/api/place/textsearch/json?query={query_string}&key={api_key}'
-            response = requests.get(url)
-            # Check if there are additional pages of results
-            data = response.json()
+    for item in query:
+        query_string = f"{category} in {item}"
+        url = f'https://maps.googleapis.com/maps/api/place/textsearch/json?query={query_string}&key={api_key}'
+        response = requests.get(url)
+        # Check if there are additional pages of results
+        data = response.json()
 
-            if response.status_code == 200:
-                for item in response.json().get("results"):
+        if response.status_code == 200:
+            for item in response.json().get("results"):
+                place_ids.append(item.get("place_id"))
+            # get the next page
+            while 'next_page_token' in data:
+                # Add the "pagetoken" parameter to the query string
+                page_token = data['next_page_token']
+                next_url = f'{url}&pagetoken={page_token}'
+                response = requests.get(next_url)
+                data = response.json()
+                # Process the next page of results
+                for item in data.get("results"):
                     place_ids.append(item.get("place_id"))
-                # get the next page
-                while 'next_page_token' in data:
-                    # Add the "pagetoken" parameter to the query string
-                    page_token = data['next_page_token']
-                    next_url = f'{url}&pagetoken={page_token}'
-                    response = requests.get(next_url)
-                    data = response.json()
-                    # Process the next page of results
-                    for item in data.get("results"):
-                        place_ids.append(item.get("place_id"))
 
     # Deduplicate the place IDs
     place_ids = list(set(place_ids))
