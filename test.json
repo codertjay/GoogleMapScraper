@@ -1,89 +1,145 @@
 {
   'html_attributions': [],
-  'results': [
-    {
-      'formatted_address': 'Lagos, Nigeria',
-      'geometry': {
-        'location': {
-          'lat': 6.5243793,
-          'lng': 3.3792057
-        },
-        'viewport': {
-          'northeast': {
-            'lat': 6.7027591,
-            'lng': 3.4696459
-          },
-          'southwest': {
-            'lat': 6.393351099999999,
-            'lng': 3.0982732
-          }
-        }
+  'result': {
+    'address_components': [
+      {
+        'long_name': 'Lagos',
+        'short_name': 'Lagos',
+        'types': [
+          'locality',
+          'political'
+        ]
       },
-      'icon': 'https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/geocode-71.png',
-      'icon_background_color': '#7B9EB0',
-      'icon_mask_base_uri': 'https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet',
-      'name': 'Lagos',
-      'photos': [
-        {
-          'height': 960,
-          'html_attributions': [
-            '<a href="https://maps.google.com/maps/contrib/105061217841224560823">A Google User</a>'
-          ],
-          'photo_reference': 'AUjq9jlku5N4SNvLr-AqNngJoPxWV7zSioTAv495Uifqk_K0__6Ah4lz-EqNcHrK3O8WOQGJ36SVhCRIUlZIoVxdjsU0lh11Vr3lQAafO_5hVjFGZGC-xI45XLBOtq9zF9Bz09Zo36vlXIXAIX8ouEoJWMLzwxFdRM-1eindvUKvmiWyaLt1',
-          'width': 776
-        }
-      ],
-      'place_id': 'ChIJwYCC5iqLOxARy9nDZ6OHntw',
-      'reference': 'ChIJwYCC5iqLOxARy9nDZ6OHntw',
-      'types': [
-        'locality',
-        'political'
-      ]
-    }
-  ],
-  'status': 'OK'
-}
-
-[
-  {
-    'formatted_address': 'Nigeria - The World Islands - Dubai - United Arab Emirates',
+      {
+        'long_name': 'Lagos',
+        'short_name': 'LA',
+        'types': [
+          'administrative_area_level_1',
+          'political'
+        ]
+      },
+      {
+        'long_name': 'Nigeria',
+        'short_name': 'NG',
+        'types': [
+          'country',
+          'political'
+        ]
+      }
+    ],
+    'adr_address': '<span class="locality">Lagos</span>, <span class="country-name">Nigeria</span>',
+    'formatted_address': 'Lagos, Nigeria',
     'geometry': {
       'location': {
-        'lat': 25.2148914,
-        'lng': 55.1746671
+        'lat': 6.5243793,
+        'lng': 3.3792057
       },
       'viewport': {
         'northeast': {
-          'lat': 25.21622117989272,
-          'lng': 55.1764833
+          'lat': 6.702759096222693,
+          'lng': 3.564808
         },
         'southwest': {
-          'lat': 25.21352152010728,
-          'lng': 55.1733613
+          'lat': 6.393351056211393,
+          'lng': 3.098273230475269
         }
       }
     },
     'icon': 'https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/geocode-71.png',
     'icon_background_color': '#7B9EB0',
     'icon_mask_base_uri': 'https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet',
-    'name': 'Nigeria',
+    'name': 'Lagos',
     'photos': [
       {
-        'height': 1040,
+        'height': 1080,
         'html_attributions': [
-          '<a href="https://maps.google.com/maps/contrib/104750772564656770284">Karim ISSA</a>'
+          '<a href="https://maps.google.com/maps/contrib/101245773608228476373">Mohammed Abubakar</a>'
         ],
-        'photo_reference': 'AUjq9jmjxCrVx8j5c7sAB8Gw6E1lxjAP0oz7yb373HGGbLIwkeFuAXO2rSUjJuYOFN2Ugiuh8fxRTgYsd-sOhwpaWx0NcIW8BiCHlF2HfAypBdtcFQILW-NMOubRz6kN1wIbvinbizd2El93CuYdiLeCjtK0QcwMbgeNlFnrG1DOPJ3MEOZu',
-        'width': 780
+        'photo_reference': 'AUjq9jkmLR7Pv9IKWHwabgIiiY1EUyL50uM4RPa8gGtpuI2xpUX7QpQdcilBT7Qwflx5B3Lt6F4uG1kUf2DacHgDsHFwEIQABf3NxpqVYIjy6ufE1H0qf8bOW-z9lePrcZRuArMZzuwBqDaz4MIzhio-13BEd0rHzPr5GHnZ7QBJNAvXPqZM',
+        'width': 1920
+      },
+      {
+        'height': 960,
+        'html_attributions': [
+          '<a href="https://maps.google.com/maps/contrib/105061217841224560823">توفيق الضبيبي</a>'
+        ],
+        'photo_reference': 'AUjq9jmYt9nOpEXUmzUHpHVy6-mu1DRIU71dISBlmtI4_ghReEbv1nLwBDjwrt5-_EjxNYHpqrh3DP7dhCTHRKHzNSwqvsK2q33_WTRGe_QCa8fMFgRgB4qPeTmwzZhkd72xvoAgZ3kgFLpOOd9dwmjVYYuwx7-ziCf-qPmsnrGvX1WQ5b1Q',
+        'width': 776
+      },
+      {
+        'height': 1707,
+        'html_attributions': [
+          '<a href="https://maps.google.com/maps/contrib/101245773608228476373">Mohammed Abubakar</a>'
+        ],
+        'photo_reference': 'AUjq9jnzg_Py3par-Su2Mu7yZGJBVxTxf4oh-iEWb12Gav5Iix-oFO4Al2922I_M5JKEvTpJ1EVFrqOY8QiDJ2haLFlOUO7XH885sD99lgC1shfZxTHvYKm59NuIGueKSYT98rUXDeDRh16covQHH4UMaAZPrjWylHt6G6J9c2qGZB0rYzvD',
+        'width': 2560
+      },
+      {
+        'height': 1024,
+        'html_attributions': [
+          '<a href="https://maps.google.com/maps/contrib/111983078695059169167">Emmy Nwafor</a>'
+        ],
+        'photo_reference': 'AUjq9jllGGLM0GibMgSb6L0g5gGIeuXFIo43h1_ql3FOjb5nDoHx022sH4esdACpaNrdME5LMLpaU7lz7TKCkZn6ikyG5Z6IPmad3c9TOpElloFFFtPgU_pmLMDzzN6gtlWQ6J_3u7tb4Dj5xsxyjjKfhlvBg2KfTzVMJ1ECCgWwIgQHC3I7',
+        'width': 848
+      },
+      {
+        'height': 1024,
+        'html_attributions': [
+          '<a href="https://maps.google.com/maps/contrib/113294038637741527056">Allan Kaitila</a>'
+        ],
+        'photo_reference': 'AUjq9jmAywFCWQFGRqNrHg5ft6xLsayORYwH4v4lONqPwRs-4IPyPVxshxh7OiJL-Ti0owu1Ts-EQYXkkJIUfUEX6x4KOjEYrp5lu-1xg9hWGXJOqnT989dtR9QdxVXFYBLUqySe11sMgwRMFuFF0GVfDvNDluyFWJ5E-arpg0sUDXNETIR1',
+        'width': 1024
+      },
+      {
+        'height': 546,
+        'html_attributions': [
+          '<a href="https://maps.google.com/maps/contrib/107700052587416351861">Man In The Know</a>'
+        ],
+        'photo_reference': 'AUjq9jnAYA1jlJGwhAguatFTLD81CWONH4gc9ZL2v7CE1dhj8vwu0hLju3dbvLwQPBdf-vgmI1PbN8uZ5cCL4JkvXU2zQGsBhggQktwFnMa6_wGpb44khfeK267-dQsgOdPUNkI_a2A6dbyLViXg_RoUzoMmJfBgGXL95IRpSAdvZyNA5PXO',
+        'width': 561
+      },
+      {
+        'height': 1060,
+        'html_attributions': [
+          '<a href="https://maps.google.com/maps/contrib/114647298085396208768">George Morina</a>'
+        ],
+        'photo_reference': 'AUjq9jmtc7Eq66Ti46m_tGSjEtkHS9_aML8Gi4666pfvMOdxR12FwY36UBSzSyT43TIK76bOcbVVEjrFJbAL-Vi-1R_HZlqyplRJuPqinbwbum_8SXKVpDlQoNHRuybgbxFGzLjWYa3uSQqYV8fZH4s16d_RGR72b3sU-qde7Q3dIr5fa8fj',
+        'width': 1600
+      },
+      {
+        'height': 1173,
+        'html_attributions': [
+          '<a href="https://maps.google.com/maps/contrib/103254513885709846639">A-Rahman Mohammad</a>'
+        ],
+        'photo_reference': 'AUjq9jlDCBQwo5D_ZN9LgAgLY7qZQBYTp-FQ1KGPOxBZTbQ8AbxZOJatS8Mxr_DkY0qY_pRFJa8EgDrRweMa76MddmFxEYpbA8CkhS2TXfFJt9UZyMLQ1eWdfvaqR2_Ta-uQ61bOl9DPK-j3Dc5rlLyf1FJP0xYn2SadBt55Yhk3QrF0UD15',
+        'width': 1080
+      },
+      {
+        'height': 768,
+        'html_attributions': [
+          '<a href="https://maps.google.com/maps/contrib/117475456540922569390">Abiodun Alexis</a>'
+        ],
+        'photo_reference': 'AUjq9jn4pOEv6fCwlb41V5ed_0Z2PXWOMhCsQFN6MLyLfC_vEl0Uc1ZwTjpECMDiyfKC9wzuZl2QIXZeIHve7SUQFQQqqILMCzLfwVmoQBQlqo9q23UCf7oYdoMJ6K2tiL4uUkYq0JvtIsgoewWGcYYkK2f2DF4s10IdF_V6le0-KLVtApCM',
+        'width': 1024
+      },
+      {
+        'height': 453,
+        'html_attributions': [
+          '<a href="https://maps.google.com/maps/contrib/108990874194365314305">Luc général Simporé</a>'
+        ],
+        'photo_reference': 'AUjq9jlYO4JscW8XACBEvrX33qj58CcRVafxRE4uTh8k8Bnnwa_-mmhSl8WmSLgVu2UDxGSg43SAaIvBtpmFcMF421fi8irCx1V_0-i3ifCkJecackCGa8QNIcX6lQk58jUM9a3sXl9G8GIKqgEzDni-leM8-ZagCIwTN7tObwgjITIY6K7s',
+        'width': 604
       }
     ],
-    'place_id': 'ChIJOTLwFflAXz4R76KeUGrNPbI',
-    'rating': 3.9,
-    'reference': 'ChIJOTLwFflAXz4R76KeUGrNPbI',
+    'place_id': 'ChIJwYCC5iqLOxARy9nDZ6OHntw',
+    'reference': 'ChIJwYCC5iqLOxARy9nDZ6OHntw',
     'types': [
-      'natural_feature',
-      'establishment'
+      'locality',
+      'political'
     ],
-    'user_ratings_total': 54
-  }
-]
+    'url': 'https://maps.google.com/?q=Lagos,+Nigeria&ftid=0x103b8b2ae68280c1:0xdc9e87a367c3d9cb',
+    'utc_offset': 60,
+    'vicinity': 'Lagos'
+  },
+  'status': 'OK'
+}

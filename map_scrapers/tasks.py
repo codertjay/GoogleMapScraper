@@ -89,46 +89,106 @@ def get_social_media_links(url):
     return social_media_links
 
 
+def get_and_extend_query(item):
+    try:
+        time.sleep(20)
+
+        response = requests.get(
+            f"https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={item}&inputtype=textquery&geometry&key={api_key}")
+        place_id = response.json().get("candidates")[0].get("place_id")
+        # Set up API parameters
+        params = {
+            "place_id": place_id,
+            "key": api_key
+        }
+        # Send API request
+        response = requests.get("https://maps.googleapis.com/maps/api/place/details/json", params=params)
+        time.sleep(20)
+        latitude = response.json().get("result").get("geometry").get("location").get("lat")
+        longitude = response.json().get("result").get("geometry").get("location").get("lng")
+        # now get
+        return {
+            "longitude": longitude,
+            "latitude": latitude
+        }
+    except:
+        return None
+
+
 @shared_task
 def get_all_place(query, category, user_id, search_info_id):
     """
    This get all the places
     """
+    time.sleep(20)
     place_ids = []
     search_info = SearchInfo.objects.filter(id=search_info_id).first()
     if not search_info:
         return True
     # split with the string
     query = query.strip("[]").split(",")
-
+    # Use textsearch
     for item in query:
-        query_string = f"{category} in {item}"
-        url = f'https://maps.googleapis.com/maps/api/place/textsearch/json?query={query_string}&key={api_key}'
-        response = requests.get(url)
-        # Check if there are additional pages of results
-        data = response.json()
+        try:
+            item = item.replace('"', "")
+            query_string = f"{category} in {item}"
+            url = f'https://maps.googleapis.com/maps/api/place/textsearch/json?query={query_string}&key={api_key}'
+            response = requests.get(url)
+            # Check if there are additional pages of results
+            data = response.json()
 
-        if response.status_code == 200:
-            for item in response.json().get("results"):
-                place_ids.append(item.get("place_id"))
-            # get the next page
-            while 'next_page_token' in data:
-                # Add the "pagetoken" parameter to the query string
-                page_token = data['next_page_token']
-                next_url = f'{url}&pagetoken={page_token}'
-                response = requests.get(next_url)
-                data = response.json()
-                # Process the next page of results
-                for item in data.get("results"):
+            if response.status_code == 200:
+                for item in response.json().get("results"):
                     place_ids.append(item.get("place_id"))
+                # get the next page
+                while 'next_page_token' in data:
+                    # Add the "pagetoken" parameter to the query string
+                    page_token = data['next_page_token']
+                    next_url = f'{url}&pagetoken={page_token}'
+                    response = requests.get(next_url)
+                    data = response.json()
+                    # Process the next page of results
+                    for item in data.get("results"):
+                        place_ids.append(item.get("place_id"))
+        except:
+            pass
+    # Use nearby search
+    for item in query:
+        try:
+            time.sleep(20)
+            item = item.replace('"', "")
+            geometry = get_and_extend_query(item)
+            if not geometry:
+                continue
+            latitude = geometry.get("latitude")
+            longitude = geometry.get("longitude")
+            url = f'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={longitude}%2C{latitude}&radius=1900500&keyword={category}&key={api_key}'
+            response = requests.get(url)
+            # Check if there are additional pages of results
+            data = response.json()
+
+            if response.status_code == 200:
+                for item in response.json().get("results"):
+                    place_ids.append(item.get("place_id"))
+                # get the next page
+                while 'next_page_token' in data:
+                    # Add the "pagetoken" parameter to the query string
+                    page_token = data['next_page_token']
+                    next_url = f'{url}&pagetoken={page_token}'
+                    response = requests.get(next_url)
+                    data = response.json()
+                    # Process the next page of results
+                    for item in data.get("results"):
+                        place_ids.append(item.get("place_id"))
+        except:
+            pass
 
     # Deduplicate the place IDs
     place_ids = list(set(place_ids))
-    print(len(place_ids))
     search_info.total_places = len(place_ids)
     search_info.save()
     for place_id in place_ids:
-        get_place_detail_and_save.delay(place_id, user_id, search_info.id)
+        get_place_detail_and_save(place_id, user_id, search_info.id)
     return True
 
 
@@ -144,7 +204,7 @@ def get_place_detail_and_save(place_id, user_id, search_info_id):
         "place_id": place_id,
         "key": api_key
     }
-
+    time.sleep(10)
     # Send API request
     response = requests.get("https://maps.googleapis.com/maps/api/place/details/json", params=params)
     if response.status_code == 200:
