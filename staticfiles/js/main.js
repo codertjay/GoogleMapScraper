@@ -220,6 +220,8 @@ function searchAllPlaces() {
     xhr.onreadystatechange = function () {
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
             var response = JSON.parse(xhr.responseText);
+            Swal.close();
+
             window.location.href = "/" + response.id + "/history/"
 
         }
@@ -239,6 +241,10 @@ function searchAllPlaces() {
         imageHeight: 100,
         imageAlt: 'Success',
         background: '#010413',
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+            Swal.showLoading()
+        }
     })
 
 }

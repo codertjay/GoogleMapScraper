@@ -2,7 +2,6 @@ from datetime import timedelta
 
 from django.contrib.auth.models import User
 from django.db import models
-
 # Create your models here.
 from django.utils import timezone
 
@@ -22,7 +21,9 @@ class SearchInfo(models.Model):
 
     @property
     def progress(self):
-        next_twenty_minutes = self.timestamp + timedelta(minutes=30)
+        next_twenty_minutes = self.timestamp + timedelta(minutes=40)
+        if self.total_places > 150:
+            next_twenty_minutes = self.timestamp + timedelta(minutes=120)
         if self.total_places == 0:
             self.total_places = 1
         if self.scraped_places > self.total_places:
