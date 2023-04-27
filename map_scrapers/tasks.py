@@ -22,13 +22,13 @@ proxies = {
 def get_email_from_website(url):
     try:
         """This gets an email address"""
-        response = requests.get(url)
+        response = requests.get(url, timeout=3)
         # Extract all emails from the website
 
         emails = re.findall(r'\b(?!.*@sentry\.com)[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', response.text)
 
         for email in emails:
-            if  "sentry" not in email:
+            if "sentry" not in email:
                 return email
         return None
     except Exception as a:
@@ -40,7 +40,7 @@ def get_social_media_links(url):
     social_media_links = ""
 
     try:
-        response = requests.get(url)
+        response = requests.get(url, timeout=3)
         html_content = response.text
 
         # Define regular expressions for each social media platform
@@ -84,9 +84,8 @@ def get_social_media_links(url):
                         social_media_links += f"YouTube_Channel:  https://www.youtube.com/user/{value[-1]}/  "
             except Exception as a:
                 print(a)
-    except:
-        pass
-
+    except Exception as a:
+        print("Error getting social")
     return social_media_links
 
 
@@ -95,44 +94,46 @@ def get_all_place(query, category, user_id, search_info_id):
     """
    This get all the places
     """
+    place_ids = []
+    cardinals = [""]
     search_info = SearchInfo.objects.filter(id=search_info_id).first()
     if not search_info:
         return True
     # split with the string
     query = query.strip("[]").split(",")
 
-    print(query)
-    for item in query:
-        url = f'https://maps.googleapis.com/maps/api/place/textsearch/json?query={category}+in+{item}&key={api_key}'
-        response = requests.get(url)
-        # Check if there are additional pages of results
-        data = response.json()
+    for cardinal in cardinals:
+        for item in query:
+            query_string = f"{category} in {item} , {cardinal}"
+            url = f'https://maps.googleapis.com/maps/api/place/textsearch/json?query={query_string}&key={api_key}'
+            response = requests.get(url)
+            # Check if there are additional pages of results
+            data = response.json()
 
-        if response.status_code == 200:
-            for item in response.json().get("results"):
-                print(item.get("place_id"))
-                get_place_detail_and_save.delay(item.get("place_id"), user_id, search_info.id)
-                search_info.total_places = search_info.total_places + 1
-                search_info.save()
-            # get the next page
-            while 'next_page_token' in data:
-                # Add the "pagetoken" parameter to the query string
-                page_token = data['next_page_token']
-                next_url = f'{url}&pagetoken={page_token}'
+            if response.status_code == 200:
+                for item in response.json().get("results"):
+                    place_ids.append(item.get("place_id"))
+                # get the next page
+                while 'next_page_token' in data:
+                    # Add the "pagetoken" parameter to the query string
+                    page_token = data['next_page_token']
+                    next_url = f'{url}&pagetoken={page_token}'
+                    time.sleep(2)
+                    response = requests.get(next_url)
+                    data = response.json()
+                    # Process the next page of results
+                    for item in data.get("results"):
+                        place_ids.append(item.get("place_id"))
 
-                # Wait for a few seconds before sending the next request
-                # (to avoid hitting the API rate limit)
-                time.sleep(5)
-
-                # Send the next request
-                response = requests.get(next_url)
-                data = response.json()
-                # Process the next page of results
-                for item in data.get("results"):
-                    print(item.get("place_id"))
-                    get_place_detail_and_save.delay(item.get("place_id"), user_id, search_info.id)
-                    search_info.total_places = search_info.total_places + 1
-                    search_info.save()
+    # Deduplicate the place IDs
+    print(len(place_ids))
+    place_ids = list(set(place_ids))
+    print(len(place_ids))
+    for place_id in place_ids:
+        time.sleep(5)
+        get_place_detail_and_save.delay(place_id, user_id, search_info.id)
+        search_info.total_places = search_info.total_places + 1
+        search_info.save()
     return True
 
 
@@ -207,11 +208,12 @@ def get_place_detail_and_save(place_id, user_id, search_info_id):
             image = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={data.get('photos')[0].get('photo_reference')}&key={api_key}"
             response = requests.head(image, allow_redirects=True)
             image = response.url
-        if not website:
-            return False
-        try:
 
-            email = get_email_from_website(website)
+        try:
+            if website:
+                email = get_email_from_website(website)
+            else:
+                email = None
 
             # check if the email exist with that user before
             search_info = SearchInfo.objects.filter(id=search_info_id).first()

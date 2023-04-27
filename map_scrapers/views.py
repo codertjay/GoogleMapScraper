@@ -19,6 +19,7 @@ from map_scrapers.utils import export_user_csv, query_items, export_all_csv, exp
     get_social_percent
 from django.http import HttpResponseRedirect
 
+
 class SearchDashboardView(LoginRequiredMixin, View):
     """
     this is used to get the search dashboard

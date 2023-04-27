@@ -1,6 +1,3 @@
-
-
-
 {
   'html_attributions': [],
   'results': [
@@ -46,3 +43,47 @@
   ],
   'status': 'OK'
 }
+
+[
+  {
+    'formatted_address': 'Nigeria - The World Islands - Dubai - United Arab Emirates',
+    'geometry': {
+      'location': {
+        'lat': 25.2148914,
+        'lng': 55.1746671
+      },
+      'viewport': {
+        'northeast': {
+          'lat': 25.21622117989272,
+          'lng': 55.1764833
+        },
+        'southwest': {
+          'lat': 25.21352152010728,
+          'lng': 55.1733613
+        }
+      }
+    },
+    'icon': 'https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/geocode-71.png',
+    'icon_background_color': '#7B9EB0',
+    'icon_mask_base_uri': 'https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet',
+    'name': 'Nigeria',
+    'photos': [
+      {
+        'height': 1040,
+        'html_attributions': [
+          '<a href="https://maps.google.com/maps/contrib/104750772564656770284">Karim ISSA</a>'
+        ],
+        'photo_reference': 'AUjq9jmjxCrVx8j5c7sAB8Gw6E1lxjAP0oz7yb373HGGbLIwkeFuAXO2rSUjJuYOFN2Ugiuh8fxRTgYsd-sOhwpaWx0NcIW8BiCHlF2HfAypBdtcFQILW-NMOubRz6kN1wIbvinbizd2El93CuYdiLeCjtK0QcwMbgeNlFnrG1DOPJ3MEOZu',
+        'width': 780
+      }
+    ],
+    'place_id': 'ChIJOTLwFflAXz4R76KeUGrNPbI',
+    'rating': 3.9,
+    'reference': 'ChIJOTLwFflAXz4R76KeUGrNPbI',
+    'types': [
+      'natural_feature',
+      'establishment'
+    ],
+    'user_ratings_total': 54
+  }
+]
