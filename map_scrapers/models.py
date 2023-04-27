@@ -22,7 +22,7 @@ class SearchInfo(models.Model):
 
     @property
     def progress(self):
-        next_twenty_minutes = self.timestamp + timedelta(minutes=20)
+        next_twenty_minutes = self.timestamp + timedelta(minutes=30)
         if self.total_places == 0:
             self.total_places = 1
         if self.scraped_places > self.total_places:

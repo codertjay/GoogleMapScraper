@@ -22,7 +22,7 @@ proxies = {
 def get_email_from_website(url):
     try:
         """This gets an email address"""
-        response = requests.get(url, timeout=3)
+        response = requests.get(url, timeout=5)
         # Extract all emails from the website
 
         emails = re.findall(r'\b(?!.*@sentry\.com)[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', response.text)
@@ -40,7 +40,7 @@ def get_social_media_links(url):
     social_media_links = ""
 
     try:
-        response = requests.get(url, timeout=3)
+        response = requests.get(url, timeout=5)
         html_content = response.text
 
         # Define regular expressions for each social media platform
@@ -118,7 +118,6 @@ def get_all_place(query, category, user_id, search_info_id):
                     # Add the "pagetoken" parameter to the query string
                     page_token = data['next_page_token']
                     next_url = f'{url}&pagetoken={page_token}'
-                    time.sleep(2)
                     response = requests.get(next_url)
                     data = response.json()
                     # Process the next page of results
@@ -126,14 +125,12 @@ def get_all_place(query, category, user_id, search_info_id):
                         place_ids.append(item.get("place_id"))
 
     # Deduplicate the place IDs
-    print(len(place_ids))
     place_ids = list(set(place_ids))
     print(len(place_ids))
+    search_info.total_places = len(place_ids)
+    search_info.save()
     for place_id in place_ids:
-        time.sleep(5)
         get_place_detail_and_save.delay(place_id, user_id, search_info.id)
-        search_info.total_places = search_info.total_places + 1
-        search_info.save()
     return True
 
 
@@ -224,7 +221,7 @@ def get_place_detail_and_save(place_id, user_id, search_info_id):
                     search_info.completed = True
                     search_info.save()
 
-                history, created = History.objects.get_or_create(
+                history = History.objects.create(
                     user_id=user_id,
                     search_info_id=search_info_id,
                     phone_number=phone_number,
