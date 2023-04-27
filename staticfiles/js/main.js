@@ -231,6 +231,15 @@ function searchAllPlaces() {
     console.log(countries)
     xhr.open('GET', '/search' + '?category=' + categoryItem.value + '&query=' + encodeURIComponent(JSON.stringify(countries)));
     xhr.send();
+    Swal.fire({
+        icon: 'success',
+        title: 'Processing!',
+        text: 'Processing data this will tabout about 15 minutes above, redirecting ....',
+        imageWidth: 100,
+        imageHeight: 100,
+        imageAlt: 'Success',
+        background: '#010413',
+    })
 
 }
 

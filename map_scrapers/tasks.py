@@ -7,6 +7,7 @@ import requests
 from celery import shared_task
 from decouple import config
 
+from map_scrapers.helper import supported_types
 from map_scrapers.models import History, SearchInfo
 
 api_key = config("GOOGLE_MAP_API_KEY")
@@ -17,6 +18,24 @@ proxies = {
     # 'http': 'http://username:password@proxyserver:port',
     # 'https': 'http://username:password@proxyserver:port'
 }
+rating_list = [
+    {
+        "minimum_rating": 0,
+        "maximum_rating": 5,
+    }, {
+        "minimum_rating": 0,
+        "maximum_rating": 1,
+    }, {
+        "minimum_rating": 1,
+        "maximum_rating": 2,
+    }, {
+        "minimum_rating": 2,
+        "maximum_rating": 3,
+    }, {
+        "minimum_rating": 4,
+        "maximum_rating": 5,
+    },
+]
 
 
 def get_email_from_website(url):
@@ -89,30 +108,32 @@ def get_social_media_links(url):
     return social_media_links
 
 
-def get_and_extend_query(item):
+def get_textsearch(query_string):
+    place_ids = []
     try:
-        time.sleep(20)
+        url = f'https://maps.googleapis.com/maps/api/place/textsearch/json?query={query_string}&key={api_key}'
+        time.sleep(5)
+        response = requests.get(url)
+        # Check if there are additional pages of results
+        data = response.json()
 
-        response = requests.get(
-            f"https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={item}&inputtype=textquery&geometry&key={api_key}")
-        place_id = response.json().get("candidates")[0].get("place_id")
-        # Set up API parameters
-        params = {
-            "place_id": place_id,
-            "key": api_key
-        }
-        # Send API request
-        response = requests.get("https://maps.googleapis.com/maps/api/place/details/json", params=params)
-        time.sleep(20)
-        latitude = response.json().get("result").get("geometry").get("location").get("lat")
-        longitude = response.json().get("result").get("geometry").get("location").get("lng")
-        # now get
-        return {
-            "longitude": longitude,
-            "latitude": latitude
-        }
+        if response.status_code == 200:
+            for item in response.json().get("results"):
+                place_ids.append(item.get("place_id"))
+            # get the next page
+            while 'next_page_token' in data:
+                # Add the "pagetoken" parameter to the query string
+                page_token = data['next_page_token']
+                time.sleep(5)
+                next_url = f'{url}&pagetoken={page_token}'
+                response = requests.get(next_url)
+                data = response.json()
+                # Process the next page of results
+                for item in data.get("results"):
+                    place_ids.append(item.get("place_id"))
     except:
-        return None
+        pass
+    return place_ids
 
 
 @shared_task
@@ -121,24 +142,7 @@ def get_all_place(query, category, user_id, search_info_id):
    This get all the places
     """
     place_ids = []
-    rating_list = [
-        {
-            "minimum_rating": 0,
-            "maximum_rating": 5,
-        }, {
-            "minimum_rating": 0,
-            "maximum_rating": 1,
-        }, {
-            "minimum_rating": 1,
-            "maximum_rating": 2,
-        }, {
-            "minimum_rating": 2,
-            "maximum_rating": 3,
-        }, {
-            "minimum_rating": 4,
-            "maximum_rating": 5,
-        },
-    ]
+
     search_info = SearchInfo.objects.filter(id=search_info_id).first()
     if not search_info:
         return True
@@ -148,25 +152,8 @@ def get_all_place(query, category, user_id, search_info_id):
         try:
             item = item.replace('"', "")
             query_string = f"{category} in {item}"
-            url = f'https://maps.googleapis.com/maps/api/place/textsearch/json?query={query_string}&key={api_key}'
-            time.sleep(5)
-            response = requests.get(url)
-            # Check if there are additional pages of results
-            data = response.json()
-
-            if response.status_code == 200:
-                for item in response.json().get("results"):
-                    place_ids.append(item.get("place_id"))
-                # get the next page
-                while 'next_page_token' in data:
-                    # Add the "pagetoken" parameter to the query string
-                    page_token = data['next_page_token']
-                    next_url = f'{url}&pagetoken={page_token}'
-                    response = requests.get(next_url)
-                    data = response.json()
-                    # Process the next page of results
-                    for item in data.get("results"):
-                        place_ids.append(item.get("place_id"))
+            # add the place ids
+            place_ids += get_textsearch(query_string)
         except:
             pass
     # Use textsearch
@@ -174,30 +161,58 @@ def get_all_place(query, category, user_id, search_info_id):
         for item in query:
             try:
                 item = item.replace('"', "")
-                query_string = f"{category} in {item}"
-                url = f'https://maps.googleapis.com/maps/api/place/textsearch/json?query={query_string}&' \
-                      f'minimum_rating={rating.get("minimum_rating")}&maximum_rating={rating.get("maximum_rating")}&key={api_key}'
-                time.sleep(5)
-                response = requests.get(url)
-                # Check if there are additional pages of results
-                data = response.json()
-
-                if response.status_code == 200:
-                    for item in response.json().get("results"):
-                        place_ids.append(item.get("place_id"))
-                    # get the next page
-                    while 'next_page_token' in data:
-                        # Add the "pagetoken" parameter to the query string
-                        time.sleep(5)
-                        page_token = data['next_page_token']
-                        next_url = f'{url}&pagetoken={page_token}'
-                        response = requests.get(next_url)
-                        data = response.json()
-                        # Process the next page of results
-                        for item in data.get("results"):
-                            place_ids.append(item.get("place_id"))
+                query_string = f'{category} in {item}&minimum_rating={rating.get("minimum_rating")}&maximum_rating={rating.get("maximum_rating")}'
+                # add the place ids
+                place_ids += get_textsearch(query_string)
             except:
                 pass
+
+    # Get open now and close now
+    for item in query:
+        try:
+            item = item.replace('"', "")
+            query_string = f'{category} in {item}&opennow=true'
+            # add the place ids
+            place_ids += get_textsearch(query_string)
+        except:
+            pass
+    # Get open now and close now
+    for item in query:
+        try:
+            item = item.replace('"', "")
+            query_string = f'{category} in {item}&opennow=false'
+            # add the place ids
+            place_ids += get_textsearch(query_string)
+        except:
+            pass
+    # Get base on price
+    for price in range(0, 4):
+        for item in query:
+            try:
+                item = item.replace('"', "")
+                query_string = f'{category} in {item}&minprice={price}&maxprice={price + 1}&'
+                # add the place ids
+                place_ids += get_textsearch(query_string)
+            except:
+                pass
+    # Get base on type
+    for item in query:
+        try:
+
+            query_string = f'{item}&type={category.lower()}&'
+            # add the place ids
+            place_ids += get_textsearch(query_string)
+        except:
+            pass
+    # Get base on type and add in
+    for item in query:
+        try:
+
+            query_string = f'{category} in {item}&type={category.lower()}&'
+            # add the place ids
+            place_ids += get_textsearch(query_string)
+        except:
+            pass
 
     # Deduplicate the place IDs
     place_ids = list(set(place_ids))
@@ -205,7 +220,6 @@ def get_all_place(query, category, user_id, search_info_id):
     search_info.save()
     for place_id in place_ids:
         time.sleep(10)
-
         get_place_detail_and_save.delay(place_id, user_id, search_info.id)
     return True
 
@@ -345,5 +359,3 @@ def create_item_task(decoded_file, user_id):
             get_all_place.delay(query, category, user_id)
         except Exception as a:
             print("The error was ", a)
-
-

@@ -1,8 +1,22 @@
 {% extends "base.html" %}
 {% load static %}
 {% block css %}
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
+        /* Set the background color of the SweetAlert overlay to black */
+        .swal-overlay {
+            background-color: rgba(0, 0, 0, 0.6) !important;
+        }
+
+        /* Set the background color of the SweetAlert dialog box to dark gray */
+        .swal-modal {
+            background-color: #333333 !important;
+        }
+
+        /* Set the text color of the SweetAlert message and buttons to white */
+        .swal-text, .swal-button {
+            color: #ffffff !important;
+        }
 
         #map {
             height: 100vh;

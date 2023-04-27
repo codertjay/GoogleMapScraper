@@ -114,3 +114,5 @@ def read_search_csv(search_csv, user_id):
     # making it a task to enable updating faster
     decoded_file = search_csv.read().decode('utf-8').splitlines()
     create_item_task.delay(decoded_file, user_id)
+
+
