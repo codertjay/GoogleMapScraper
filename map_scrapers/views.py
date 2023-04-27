@@ -53,7 +53,7 @@ def search_api(request):
         keyword=category,
         location=query.replace("[", "").replace('"', "").replace("]", "")
     )
-    get_all_place(query, category, request.user.id, search_info.id)
+    get_all_place.delay(query, category, request.user.id, search_info.id)
     # Get the single place
     return JsonResponse({"status": "ok", "id": search_info.id})
 
