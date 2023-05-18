@@ -29,8 +29,7 @@ $` celery -A GoogleMapScraper  worker -l info --pool=solo`
 $  `celery -A GoogleMapScraper worker --loglevel=info`
 
 ##### And also the The .env File will contain 
-`
-GOOGLE_MAP_API_KEY=GOOGLE_MAP_API_KEY
+`GOOGLE_MAP_API_KEY=GOOGLE_MAP_API_KEY
 
 DEBUG=True
 
@@ -40,6 +39,5 @@ SECRET_KEY=SECRET_KEY
 POSTGRESDB_NAME=POSTGRESDB_NAME
 POSTGRESDB_USER=POSTGRESDB_USER
 POSTGRESDB_PASSWORD=POSTGRESDB_PASSWORD
-POSTGRESDB_HOST=localhost
-`
+POSTGRESDB_HOST=localhost`
 
